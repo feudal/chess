@@ -1,8 +1,22 @@
 .cell {
   aspect-ratio: 1;
+  position: relative;
+
+  &--white {
+    background-color: var(--white-color);
+    .cell__notation {
+      color: var(--black-color);
+    }
+  }
 
   &--black {
-    color: #fff;
-    background-color: black;
+    background-color: var(--black-color);
+    .cell__notation {
+      color: var(--white-color);
+    }
+  }
+
+  &__notation {
+    position: absolute;
   }
 }
