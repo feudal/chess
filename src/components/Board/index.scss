@@ -1,0 +1,8 @@
+.board {
+  display: grid;
+  // grid-auto-flow: revert;
+  grid-template-columns: repeat(8, 1fr);
+  max-width: 100vh;
+  max-height: 100vh;
+  border: 1px solid #000;
+}

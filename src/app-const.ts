@@ -11,4 +11,10 @@ const BOARD_CELLS: CellColor[][] = [
   ["black", "white", "black", "white", "black", "white", "black", "white"],
 ];
 
-export { BOARD_CELLS };
+const BOARD_NOTATION_X = ["8", "7", "6", "5", "4", "3", "2", "1"];
+const BOARD_NOTATION_Y = ["a", "b", "c", "d", "e", "f", "g", "h"];
+const BOARD_NOTATION = BOARD_NOTATION_X.map((x) =>
+  BOARD_NOTATION_Y.map((y) => x + y)
+).flat();
+
+export { BOARD_CELLS, BOARD_NOTATION };

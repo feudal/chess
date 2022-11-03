@@ -1,7 +1,14 @@
-import "./styles/index.scss";
+import { Board } from "components";
+import { GameProvider } from "context";
+
+import "styles/index.scss";
 
 function App() {
-  return <div className="App">app</div>;
+  return (
+    <GameProvider>
+      <Board />
+    </GameProvider>
+  );
 }
 
 export default App;
