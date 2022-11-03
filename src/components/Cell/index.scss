@@ -3,16 +3,16 @@
   position: relative;
 
   &--white {
-    background-color: var(--white-color);
+    background-color: var(--white-cell);
     .cell__notation {
-      color: var(--black-color);
+      color: var(--black-cell);
     }
   }
 
   &--black {
-    background-color: var(--black-color);
+    background-color: var(--black-cell);
     .cell__notation {
-      color: var(--white-color);
+      color: var(--white-cell);
     }
   }
 
