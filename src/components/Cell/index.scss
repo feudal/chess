@@ -8,12 +8,23 @@
       color: var(--notation-color);
     }
   }
-
   &--black {
     background-color: var(--black-cell);
     .cell__notation {
       color: var(--notation-color);
     }
+  }
+
+  &--active,
+  &--selected,
+  &--available {
+    cursor: pointer;
+  }
+  &--selected {
+    background-color: var(--selected-cell);
+  }
+  &--available {
+    background-color: var(--available-cell);
   }
 
   &__notation {

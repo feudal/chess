@@ -1,6 +1,7 @@
 export type GameContextType = {
   figurePositions: { [key: string]: string };
   setFigurePositions: () => void;
+  whiteTurn: boolean;
 };
 
 export type FigureType =

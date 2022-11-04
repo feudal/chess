@@ -7,6 +7,7 @@ export const GameContext = createContext<GameContextType | null>(null);
 const gameSettings = {
   figurePositions: INITIAL_FIGURE_POSITIONS,
   setFigurePositions: () => {},
+  whiteTurn: true,
 };
 
 export const GameProvider = ({ children }: PropsWithChildren) => {
