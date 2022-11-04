@@ -5,7 +5,7 @@ const bem = makeBEM("figure");
 
 interface FigureProps {
   type: "pawn" | "rook" | "knight" | "bishop" | "queen" | "king";
-  color: "white" | "black";
+  color?: "white" | "black";
 }
 
 export const Figure = ({ type, color = "black", ...props }: FigureProps) => {
