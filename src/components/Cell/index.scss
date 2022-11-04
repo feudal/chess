@@ -5,14 +5,14 @@
   &--white {
     background-color: var(--white-cell);
     .cell__notation {
-      color: var(--black-cell);
+      color: var(--notation-color);
     }
   }
 
   &--black {
     background-color: var(--black-cell);
     .cell__notation {
-      color: var(--white-cell);
+      color: var(--notation-color);
     }
   }
 
