@@ -1,7 +1,4 @@
-import {
-  ClassModifier,
-  createClassWithModifiers,
-} from "./create-class-with-modifiers";
+import { ClassModifier, createClassWithModifiers } from "./create-class-with-modifiers";
 
 /**
  * @example
@@ -23,14 +20,8 @@ import {
  * cls === "block__element block__element--foo block__element--object block__element--array"
  */
 export const makeBEM = (blockName: string) => {
-  return (
-    elementName?: string | null | 0 | undefined,
-    ...modifierArgs: ClassModifier[]
-  ) =>
+  return (elementName?: string | null | 0 | undefined, ...modifierArgs: ClassModifier[]) =>
     elementName
-      ? createClassWithModifiers(
-          `${blockName}__${elementName}`,
-          ...modifierArgs
-        )
+      ? createClassWithModifiers(`${blockName}__${elementName}`, ...modifierArgs)
       : createClassWithModifiers(blockName, ...modifierArgs);
 };

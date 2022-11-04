@@ -9,17 +9,13 @@ import { FigureColor, FigureType } from "types";
 
 export const Board = () => {
   const game = useContext(GameContext);
-
   return (
     <div className="board">
       {Array(64)
         .fill(null)
         .map((_, i) => {
-          const [type, color] =
-            game?.figurePositions?.[BOARD_NOTATION[i]]?.split("-") || [];
-          const isActive = game?.whiteTurn
-            ? color === "white"
-            : color === "black";
+          const [type, color] = game?.figurePositions?.[BOARD_NOTATION[i]]?.split("-") || [];
+          const isActive = game?.whiteTurn ? color === "white" : color === "black";
 
           return (
             <Cell

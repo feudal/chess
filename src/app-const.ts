@@ -13,9 +13,7 @@ const BOARD_CELLS: CellColor[][] = [
 
 const BOARD_NOTATION_X = ["8", "7", "6", "5", "4", "3", "2", "1"];
 const BOARD_NOTATION_Y = ["a", "b", "c", "d", "e", "f", "g", "h"];
-const BOARD_NOTATION = BOARD_NOTATION_X.map((x) =>
-  BOARD_NOTATION_Y.map((y) => x + y)
-).flat();
+const BOARD_NOTATION = BOARD_NOTATION_X.map((x) => BOARD_NOTATION_Y.map((y) => x + y)).flat();
 
 const INITIAL_FIGURE_POSITIONS: { [key: string]: string } = {
   "1a": "rook-white",

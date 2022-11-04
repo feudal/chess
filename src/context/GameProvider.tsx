@@ -6,12 +6,10 @@ export const GameContext = createContext<GameContextType | null>(null);
 
 const gameSettings = {
   figurePositions: INITIAL_FIGURE_POSITIONS,
-  setFigurePositions: () => {},
+  setFigurePositions: () => 0,
   whiteTurn: true,
 };
 
 export const GameProvider = ({ children }: PropsWithChildren) => {
-  return (
-    <GameContext.Provider value={gameSettings}>{children}</GameContext.Provider>
-  );
+  return <GameContext.Provider value={gameSettings}>{children}</GameContext.Provider>;
 };
