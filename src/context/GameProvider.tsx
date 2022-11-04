@@ -1,11 +1,12 @@
 import { createContext, PropsWithChildren } from "react";
+import { INITIAL_FIGURE_POSITIONS } from "app-const";
 import { GameContextType } from "types";
 
 export const GameContext = createContext<GameContextType | null>(null);
 
 const gameSettings = {
-  cells: Array(64).fill(null),
-  setCells: () => {},
+  figurePositions: INITIAL_FIGURE_POSITIONS,
+  setFigurePositions: () => {},
 };
 
 export const GameProvider = ({ children }: PropsWithChildren) => {
