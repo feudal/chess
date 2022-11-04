@@ -16,6 +16,7 @@ module.exports = {
   rules: {
     "react/react-in-jsx-scope": "off",
     "@typescript-eslint/no-unused-vars": "warn",
+    "@typescript-eslint/no-non-null-assertion": "off",
   },
   settings: {
     react: {
