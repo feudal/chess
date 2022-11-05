@@ -1,6 +1,8 @@
 export type GameContextType = {
-  cellInformation: CellInformation[];
   whiteTurn: boolean;
+  cellsInformation: CellInformation[];
+  move: (cellInfo: CellInformation) => void;
+  selectedCell?: CellInformation;
 };
 
 export type FigureType = "pawn" | "rook" | "knight" | "bishop" | "queen" | "king";
