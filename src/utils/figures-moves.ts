@@ -42,3 +42,50 @@ export const getPawnAvailableMoves = (cellsInfo: CellInformation[], cell: CellIn
 
   return availableMoves;
 };
+
+export const getRookAvailableMoves = (cellsInfo: CellInformation[], cell: CellInformation) => {
+  const availableMoves: string[] = [];
+  const figureColor = cell.figure?.color;
+
+  // * 1. Check if there is a figure in front of the rook
+  let currentCell = cell.up(cellsInfo);
+  while (currentCell && !currentCell.figure) {
+    availableMoves.push(currentCell.notation);
+    currentCell = currentCell.up(cellsInfo);
+  }
+  if (currentCell && currentCell.figure?.color !== figureColor) {
+    availableMoves.push(currentCell.notation);
+  }
+
+  // * 2. Check if there is a figure on the right of the rook
+  currentCell = cell.right(cellsInfo);
+  while (currentCell && !currentCell.figure) {
+    availableMoves.push(currentCell.notation);
+    currentCell = currentCell.right(cellsInfo);
+  }
+  if (currentCell && currentCell.figure?.color !== figureColor) {
+    availableMoves.push(currentCell.notation);
+  }
+
+  // * 3. Check if there is a figure behind the rook
+  currentCell = cell.down(cellsInfo);
+  while (currentCell && !currentCell.figure) {
+    availableMoves.push(currentCell.notation);
+    currentCell = currentCell.down(cellsInfo);
+  }
+  if (currentCell && currentCell.figure?.color !== figureColor) {
+    availableMoves.push(currentCell.notation);
+  }
+
+  // * 4. Check if there is a figure on the left of the rook
+  currentCell = cell.left(cellsInfo);
+  while (currentCell && !currentCell.figure) {
+    availableMoves.push(currentCell.notation);
+    currentCell = currentCell.left(cellsInfo);
+  }
+  if (currentCell && currentCell.figure?.color !== figureColor) {
+    availableMoves.push(currentCell.notation);
+  }
+
+  return availableMoves;
+};
