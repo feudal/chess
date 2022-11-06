@@ -89,3 +89,50 @@ export const getRookAvailableMoves = (cellsInfo: CellInformation[], cell: CellIn
 
   return availableMoves;
 };
+
+export const getBishopAvailableMoves = (cellsInfo: CellInformation[], cell: CellInformation) => {
+  const availableMoves: string[] = [];
+  const figureColor = cell.figure?.color;
+
+  // * 1. Check if there is a figure on the top right of the bishop
+  let currentCell = cell.upRight(cellsInfo);
+  while (currentCell && !currentCell.figure) {
+    availableMoves.push(currentCell.notation);
+    currentCell = currentCell.upRight(cellsInfo);
+  }
+  if (currentCell && currentCell.figure?.color !== figureColor) {
+    availableMoves.push(currentCell.notation);
+  }
+
+  // * 2. Check if there is a figure on the bottom right of the bishop
+  currentCell = cell.downRight(cellsInfo);
+  while (currentCell && !currentCell.figure) {
+    availableMoves.push(currentCell.notation);
+    currentCell = currentCell.downRight(cellsInfo);
+  }
+  if (currentCell && currentCell.figure?.color !== figureColor) {
+    availableMoves.push(currentCell.notation);
+  }
+
+  // * 3. Check if there is a figure on the bottom left of the bishop
+  currentCell = cell.downLeft(cellsInfo);
+  while (currentCell && !currentCell.figure) {
+    availableMoves.push(currentCell.notation);
+    currentCell = currentCell.downLeft(cellsInfo);
+  }
+  if (currentCell && currentCell.figure?.color !== figureColor) {
+    availableMoves.push(currentCell.notation);
+  }
+
+  // * 4. Check if there is a figure on the top left of the bishop
+  currentCell = cell.upLeft(cellsInfo);
+  while (currentCell && !currentCell.figure) {
+    availableMoves.push(currentCell.notation);
+    currentCell = currentCell.upLeft(cellsInfo);
+  }
+  if (currentCell && currentCell.figure?.color !== figureColor) {
+    availableMoves.push(currentCell.notation);
+  }
+
+  return availableMoves;
+};

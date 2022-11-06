@@ -7,7 +7,12 @@ import {
   INITIAL_FIGURE_POSITIONS,
 } from "app-const";
 import { CellInformation, FigureColor, FigureType, GameContextType } from "types";
-import { getColumnKey, getPawnAvailableMoves, getRookAvailableMoves } from "utils";
+import {
+  getBishopAvailableMoves,
+  getColumnKey,
+  getPawnAvailableMoves,
+  getRookAvailableMoves,
+} from "utils";
 
 const getAvailableMoves = (cellsInfo: CellInformation[], cell: CellInformation) => {
   // * Notation format "1f"
@@ -16,8 +21,9 @@ const getAvailableMoves = (cellsInfo: CellInformation[], cell: CellInformation) 
       return getPawnAvailableMoves(cellsInfo, cell);
     case "rook":
       return getRookAvailableMoves(cellsInfo, cell);
+    case "bishop":
+      return getBishopAvailableMoves(cellsInfo, cell);
     // case "knight":
-    // case "bishop":
     // case "queen":
     // case "king":
     default:
