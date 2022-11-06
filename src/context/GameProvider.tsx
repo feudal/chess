@@ -1,24 +1,30 @@
 import { createContext, PropsWithChildren, useState } from "react";
 
-import { BOARD_CELLS, BOARD_NOTATION, INITIAL_FIGURE_POSITIONS } from "app-const";
+import {
+  BOARD_CELLS,
+  BOARD_NOTATION,
+  COLUMN_NUMBER as COL_NUM,
+  INITIAL_FIGURE_POSITIONS,
+} from "app-const";
 import { CellInformation, FigureColor, FigureType, GameContextType } from "types";
+import { getPawnAvailableMoves } from "utils";
 
-const getAvailableMoves = (cellInfo: CellInformation) => {
-  return ["4e", "4f", "4g", "4h"];
-  // switch (FigureType) {
-  //   case "pawn":
-  //     return cell.color === "white" ? ["A2", "A3"] : ["A7", "A6"];
-  //   case "rook":
-  //     return ["A1", "A8", "H1", "H8"];
-  //   case "knight":
-  //     return ["B1", "G1", "B8", "G8"];
-  //   case "bishop":
-  //     return ["C1", "F1", "C8", "F8"];
-  //   case "queen":
-  //     return ["D1", "D8"];
-  //   case "king":
-  //     return ["E1", "E8"];
-  // }
+const getAvailableMoves = (cellsInfo: CellInformation[], cell: CellInformation) => {
+  // * Notation format "1f"
+  switch (cell.figure?.type) {
+    case "pawn":
+      return getPawnAvailableMoves(cellsInfo, cell);
+    // case "rook":
+    // case "knight":
+    // case "bishop":
+    // case "queen":
+    // case "king":
+    default:
+      return [];
+  }
+};
+const getKey = (column: typeof COL_NUM, row: number) => {
+  return Object.keys(column).find((key) => column[key] === row);
 };
 
 const cellsInformation: CellInformation[] = Array(64)
@@ -27,11 +33,62 @@ const cellsInformation: CellInformation[] = Array(64)
     const [type, color] = INITIAL_FIGURE_POSITIONS?.[BOARD_NOTATION[i]]?.split("-") || [];
     const figure = type ? { type: type as FigureType, color: color as FigureColor } : undefined;
 
+    const [row, column] = BOARD_NOTATION[i].split("");
+
+    const up = (cells: CellInformation[], step = 1) => {
+      if (+row + step > 8) return undefined;
+      return cells[BOARD_NOTATION.indexOf(`${+row + step}${column}`)];
+    };
+    const down = (cells: CellInformation[], step = 1) => {
+      if (+row - step < 0) return undefined;
+      return cells[BOARD_NOTATION.indexOf(`${+row - step}${column}`)];
+    };
+    const left = (cells: CellInformation[], step = 1) => {
+      if (COL_NUM[column] - step < 0) return undefined;
+      return cells[BOARD_NOTATION.indexOf(`${row}${getKey(COL_NUM, COL_NUM[column] - step)}`)];
+    };
+    const right = (cells: CellInformation[], step = 1) => {
+      if (COL_NUM[column] + step > 8) return undefined;
+      return cells[BOARD_NOTATION.indexOf(`${row}${getKey(COL_NUM, COL_NUM[column] + step)}`)];
+    };
+    const upLeft = (cells: CellInformation[], step = 1) => {
+      if (+row + step > 8 || COL_NUM[column] - step < 0) return undefined;
+      return cells[
+        BOARD_NOTATION.indexOf(`${+row + step}${getKey(COL_NUM, COL_NUM[column] - step)}`)
+      ];
+    };
+    const upRight = (cells: CellInformation[], step = 1) => {
+      if (+row + step > 8 || COL_NUM[column] + step > 8) return undefined;
+      return cells[
+        BOARD_NOTATION.indexOf(`${+row + step}${getKey(COL_NUM, COL_NUM[column] + step)}`)
+      ];
+    };
+    const downLeft = (cells: CellInformation[], step = 1) => {
+      if (+row - step < 0 || COL_NUM[column] - step < 0) return undefined;
+      return cells[
+        BOARD_NOTATION.indexOf(`${+row - step}${getKey(COL_NUM, COL_NUM[column] - step)}`)
+      ];
+    };
+    const downRight = (cells: CellInformation[], step = 1) => {
+      if (+row - step < 0 || COL_NUM[column] + step > 8) return undefined;
+      return cells[
+        BOARD_NOTATION.indexOf(`${+row - step}${getKey(COL_NUM, COL_NUM[column] + step)}`)
+      ];
+    };
+
     return {
       color: BOARD_CELLS[i % 8][Math.floor(i / 8)],
       notation: BOARD_NOTATION[i],
       state: color === "white" ? "active" : undefined,
       figure,
+      up,
+      down,
+      left,
+      right,
+      upLeft,
+      upRight,
+      downLeft,
+      downRight,
     };
   });
 
@@ -54,7 +111,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     if (!cellInfo?.figure || cellInfo.figure.color !== (whiteTurn ? "white" : "black")) return;
 
     setSelectedCell(cellInfo);
-    const availableMoves = getAvailableMoves(cellInfo);
+    const availableMoves = getAvailableMoves(cellsInformation, cellInfo);
 
     setCellsInformation((prev) => {
       return prev.map((cell) => {
@@ -64,6 +121,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         if (cell.state === "selected") return { ...cell, state: "active" };
         // * show available cells for selected figure
         if (availableMoves.includes(cell.notation)) return { ...cell, state: "available" };
+        // * set available cells to "undefined"
+        if (cell.state === "available") return { ...cell, state: undefined };
 
         return cell;
       });

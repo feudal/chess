@@ -51,4 +51,6 @@ const INITIAL_FIGURE_POSITIONS: { [key: string]: string } = {
   "7h": "pawn-black",
 };
 
-export { BOARD_CELLS, BOARD_NOTATION, INITIAL_FIGURE_POSITIONS };
+const COLUMN_NUMBER: Record<string, number> = { a: 1, b: 2, c: 3, d: 4, e: 5, f: 6, g: 7, h: 8 };
+
+export { BOARD_CELLS, BOARD_NOTATION, INITIAL_FIGURE_POSITIONS, COLUMN_NUMBER };
