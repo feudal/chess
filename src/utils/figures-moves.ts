@@ -90,6 +90,55 @@ export const getRookAvailableMoves = (cellsInfo: CellInformation[], cell: CellIn
   return availableMoves;
 };
 
+export const getKnightAvailableMoves = (cellsInfo: CellInformation[], cell: CellInformation) => {
+  const availableMoves: string[] = [];
+  const figureColor = cell.figure?.color;
+
+  // * 1. Check if there is a figure in front/left of the knight
+  let currentCell = cell.up(cellsInfo, 2)?.left(cellsInfo);
+
+  if (currentCell && currentCell?.figure?.color !== figureColor) {
+    availableMoves.push(currentCell.notation);
+  }
+  // * 2. Check if there is a figure in the front/right of the knight
+  currentCell = cell.up(cellsInfo, 2)?.right(cellsInfo);
+  if (currentCell && currentCell?.figure?.color !== figureColor) {
+    availableMoves.push(currentCell!.notation);
+  }
+  // * 3. Check if there is a figure in the right/front of the knight
+  currentCell = cell.right(cellsInfo, 2)?.up(cellsInfo);
+  if (currentCell && currentCell?.figure?.color !== figureColor) {
+    availableMoves.push(currentCell!.notation);
+  }
+  // * 4. Check if there is a figure in the right/back of the knight
+  currentCell = cell.right(cellsInfo, 2)?.down(cellsInfo);
+  if (currentCell && currentCell?.figure?.color !== figureColor) {
+    availableMoves.push(currentCell!.notation);
+  }
+  // * 5. Check if there is a figure in the back/right of the knight
+  currentCell = cell.down(cellsInfo, 2)?.right(cellsInfo);
+  if (currentCell && currentCell?.figure?.color !== figureColor) {
+    availableMoves.push(currentCell!.notation);
+  }
+  // * 6. Check if there is a figure in the back/left of the knight
+  currentCell = cell.down(cellsInfo, 2)?.left(cellsInfo);
+  if (currentCell && currentCell?.figure?.color !== figureColor) {
+    availableMoves.push(currentCell!.notation);
+  }
+  // * 7. Check if there is a figure in the left/back of the knight
+  currentCell = cell.left(cellsInfo, 2)?.down(cellsInfo);
+  if (currentCell && currentCell?.figure?.color !== figureColor) {
+    availableMoves.push(currentCell!.notation);
+  }
+  // * 8. Check if there is a figure in the left/front of the knight
+  currentCell = cell.left(cellsInfo, 2)?.up(cellsInfo);
+  if (currentCell && currentCell?.figure?.color !== figureColor) {
+    availableMoves.push(currentCell!.notation);
+  }
+
+  return availableMoves;
+};
+
 export const getBishopAvailableMoves = (cellsInfo: CellInformation[], cell: CellInformation) => {
   const availableMoves: string[] = [];
   const figureColor = cell.figure?.color;
@@ -130,6 +179,149 @@ export const getBishopAvailableMoves = (cellsInfo: CellInformation[], cell: Cell
     availableMoves.push(currentCell.notation);
     currentCell = currentCell.upLeft(cellsInfo);
   }
+  if (currentCell && currentCell.figure?.color !== figureColor) {
+    availableMoves.push(currentCell.notation);
+  }
+
+  return availableMoves;
+};
+
+export const getQueenAvailableMoves = (cellsInfo: CellInformation[], cell: CellInformation) => {
+  const availableMoves: string[] = [];
+  const figureColor = cell.figure?.color;
+
+  // * 1. Check if there is a figure in front of the queen
+  let currentCell = cell.up(cellsInfo);
+  while (currentCell && !currentCell.figure) {
+    availableMoves.push(currentCell.notation);
+    currentCell = currentCell.up(cellsInfo);
+  }
+  if (currentCell && currentCell.figure?.color !== figureColor) {
+    availableMoves.push(currentCell.notation);
+  }
+
+  // * 2. Check if there is a figure on the right of the queen
+  currentCell = cell.right(cellsInfo);
+  while (currentCell && !currentCell.figure) {
+    availableMoves.push(currentCell.notation);
+    currentCell = currentCell.right(cellsInfo);
+  }
+  if (currentCell && currentCell.figure?.color !== figureColor) {
+    availableMoves.push(currentCell.notation);
+  }
+
+  // * 3. Check if there is a figure behind the queen
+  currentCell = cell.down(cellsInfo);
+  while (currentCell && !currentCell.figure) {
+    availableMoves.push(currentCell.notation);
+    currentCell = currentCell.down(cellsInfo);
+  }
+  if (currentCell && currentCell.figure?.color !== figureColor) {
+    availableMoves.push(currentCell.notation);
+  }
+
+  // * 4. Check if there is a figure on the left of the queen
+  currentCell = cell.left(cellsInfo);
+  while (currentCell && !currentCell.figure) {
+    availableMoves.push(currentCell.notation);
+    currentCell = currentCell.left(cellsInfo);
+  }
+  if (currentCell && currentCell.figure?.color !== figureColor) {
+    availableMoves.push(currentCell.notation);
+  }
+
+  // * 5. Check if there is a figure on the top right of the queen
+  currentCell = cell.upRight(cellsInfo);
+  while (currentCell && !currentCell.figure) {
+    availableMoves.push(currentCell.notation);
+    currentCell = currentCell.upRight(cellsInfo);
+  }
+  if (currentCell && currentCell.figure?.color !== figureColor) {
+    availableMoves.push(currentCell.notation);
+  }
+
+  // * 6. Check if there is a figure on the bottom right of the queen
+  currentCell = cell.downRight(cellsInfo);
+  while (currentCell && !currentCell.figure) {
+    availableMoves.push(currentCell.notation);
+    currentCell = currentCell.downRight(cellsInfo);
+  }
+  if (currentCell && currentCell.figure?.color !== figureColor) {
+    availableMoves.push(currentCell.notation);
+  }
+
+  // * 7. Check if there is a figure on the bottom left of the queen
+  currentCell = cell.downLeft(cellsInfo);
+  while (currentCell && !currentCell.figure) {
+    availableMoves.push(currentCell.notation);
+    currentCell = currentCell.downLeft(cellsInfo);
+  }
+  if (currentCell && currentCell.figure?.color !== figureColor) {
+    availableMoves.push(currentCell.notation);
+  }
+
+  // * 8. Check if there is a figure on the top left of the queen
+  currentCell = cell.upLeft(cellsInfo);
+  while (currentCell && !currentCell.figure) {
+    availableMoves.push(currentCell.notation);
+    currentCell = currentCell.upLeft(cellsInfo);
+  }
+  if (currentCell && currentCell.figure?.color !== figureColor) {
+    availableMoves.push(currentCell.notation);
+  }
+
+  return availableMoves;
+};
+
+// TODO need to implement this function
+export const getKingAvailableMoves = (cellsInfo: CellInformation[], cell: CellInformation) => {
+  const availableMoves: string[] = [];
+  const figureColor = cell.figure?.color;
+
+  // * 1. Check if there is a figure in front of the king
+  let currentCell = cell.up(cellsInfo);
+  if (currentCell && currentCell.figure?.color !== figureColor) {
+    availableMoves.push(currentCell.notation);
+  }
+
+  // * 2. Check if there is a figure on the right of the king
+  currentCell = cell.right(cellsInfo);
+  if (currentCell && currentCell.figure?.color !== figureColor) {
+    availableMoves.push(currentCell.notation);
+  }
+
+  // * 3. Check if there is a figure behind the king
+  currentCell = cell.down(cellsInfo);
+  if (currentCell && currentCell.figure?.color !== figureColor) {
+    availableMoves.push(currentCell.notation);
+  }
+
+  // * 4. Check if there is a figure on the left of the king
+  currentCell = cell.left(cellsInfo);
+  if (currentCell && currentCell.figure?.color !== figureColor) {
+    availableMoves.push(currentCell.notation);
+  }
+
+  // * 5. Check if there is a figure on the top right of the king
+  currentCell = cell.upRight(cellsInfo);
+  if (currentCell && currentCell.figure?.color !== figureColor) {
+    availableMoves.push(currentCell.notation);
+  }
+
+  // * 6. Check if there is a figure on the bottom right of the king
+  currentCell = cell.downRight(cellsInfo);
+  if (currentCell && currentCell.figure?.color !== figureColor) {
+    availableMoves.push(currentCell.notation);
+  }
+
+  // * 7. Check if there is a figure on the bottom left of the king
+  currentCell = cell.downLeft(cellsInfo);
+  if (currentCell && currentCell.figure?.color !== figureColor) {
+    availableMoves.push(currentCell.notation);
+  }
+
+  // * 8. Check if there is a figure on the top left of the king
+  currentCell = cell.upLeft(cellsInfo);
   if (currentCell && currentCell.figure?.color !== figureColor) {
     availableMoves.push(currentCell.notation);
   }

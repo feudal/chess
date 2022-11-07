@@ -10,7 +10,10 @@ import { CellInformation, FigureColor, FigureType, GameContextType } from "types
 import {
   getBishopAvailableMoves,
   getColumnKey,
+  getKingAvailableMoves,
+  getKnightAvailableMoves,
   getPawnAvailableMoves,
+  getQueenAvailableMoves,
   getRookAvailableMoves,
 } from "utils";
 
@@ -21,13 +24,16 @@ const getAvailableMoves = (cellsInfo: CellInformation[], cell: CellInformation) 
       return getPawnAvailableMoves(cellsInfo, cell);
     case "rook":
       return getRookAvailableMoves(cellsInfo, cell);
+    case "knight":
+      return getKnightAvailableMoves(cellsInfo, cell);
     case "bishop":
       return getBishopAvailableMoves(cellsInfo, cell);
-    // case "knight":
-    // case "queen":
-    // case "king":
+    case "queen":
+      return getQueenAvailableMoves(cellsInfo, cell);
+    case "king":
+      return getKingAvailableMoves(cellsInfo, cell);
     default:
-      return [];
+      throw new Error("Figure type is not defined");
   }
 };
 
