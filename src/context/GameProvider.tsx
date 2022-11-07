@@ -1,4 +1,4 @@
-import { createContext, PropsWithChildren, useState } from "react";
+import { createContext, PropsWithChildren, useEffect, useState } from "react";
 
 import {
   BOARD_CELLS as B_CELLS,
@@ -7,11 +7,7 @@ import {
   INITIAL_FIGURE_POSITIONS,
 } from "app-const";
 import { CellInformation, FigureColor, FigureType, GameContextType } from "types";
-import { getAvailableMoves, getColumnKey } from "utils";
-
-const checkIfCheck = (cells: CellInformation[], cell: CellInformation) => {
-  return true;
-};
+import { checkIfCheck, getAvailableMoves, getColumnKey } from "utils";
 
 const CELLS_INFORMATION: CellInformation[] = Array(64)
   .fill(null)
@@ -134,9 +130,12 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
     if (isMoving) {
       moveFigure(cellInfo);
-      setIsCheck(checkIfCheck(cellsInformation, cellInfo));
     } else selectFigure(cellInfo);
   };
+
+  useEffect(() => {
+    setIsCheck(checkIfCheck(cellsInformation, whiteTurn ? "white" : "black"));
+  }, [cellsInformation]);
 
   return (
     <GameContext.Provider
