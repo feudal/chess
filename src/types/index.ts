@@ -6,7 +6,23 @@ export type GameContextType = {
   selectedCell?: CellInformation;
 };
 
-export type FigureType = "pawn" | "rook" | "knight" | "bishop" | "queen" | "king";
+export enum FIGURE_TYPE {
+  KING = "KING",
+  QUEEN = "QUEEN",
+  ROOK = "ROOK",
+  BISHOP = "BISHOP",
+  KNIGHT = "KNIGHT",
+  PAWN = "PAWN",
+}
+
+export type FigureType =
+  | FIGURE_TYPE.KING
+  | FIGURE_TYPE.QUEEN
+  | FIGURE_TYPE.ROOK
+  | FIGURE_TYPE.BISHOP
+  | FIGURE_TYPE.KNIGHT
+  | FIGURE_TYPE.PAWN;
+
 export type FigureColor = "white" | "black";
 
 export interface FigureInfo {

@@ -1,6 +1,7 @@
 import { HTMLAttributes } from "react";
+
 import { Bishop, King, Knight, Pawn, Queen, Rook } from "svg";
-import { FigureType, FigureColor } from "types";
+import { FIGURE_TYPE, FigureColor, FigureType } from "types";
 import { makeBEM } from "utils";
 
 const bem = makeBEM("figure");
@@ -13,12 +14,12 @@ interface FigureProps extends HTMLAttributes<HTMLDivElement> {
 export const Figure = ({ type, color = "black", ...props }: FigureProps) => {
   return (
     <div {...props} className={bem(null, [color])}>
-      {type === "pawn" && <Pawn />}
-      {type === "rook" && <Rook />}
-      {type === "knight" && <Knight />}
-      {type === "bishop" && <Bishop />}
-      {type === "queen" && <Queen />}
-      {type === "king" && <King />}
+      {type === FIGURE_TYPE.PAWN && <Pawn />}
+      {type === FIGURE_TYPE.KNIGHT && <Knight />}
+      {type === FIGURE_TYPE.BISHOP && <Bishop />}
+      {type === FIGURE_TYPE.ROOK && <Rook />}
+      {type === FIGURE_TYPE.QUEEN && <Queen />}
+      {type === FIGURE_TYPE.KING && <King />}
     </div>
   );
 };

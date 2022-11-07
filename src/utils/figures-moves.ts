@@ -1,4 +1,4 @@
-import { CellInformation } from "types";
+import { CellInformation, FIGURE_TYPE } from "types";
 
 const getPawnAvailableMoves = (cellsInfo: CellInformation[], cell: CellInformation) => {
   const availableMoves: string[] = [];
@@ -331,17 +331,17 @@ export const getKingAvailableMoves = (cellsInfo: CellInformation[], cell: CellIn
 
 export const getAvailableMoves = (cellsInfo: CellInformation[], cell: CellInformation) => {
   switch (cell.figure?.type) {
-    case "pawn":
+    case FIGURE_TYPE.PAWN:
       return getPawnAvailableMoves(cellsInfo, cell);
-    case "rook":
+    case FIGURE_TYPE.ROOK:
       return getRookAvailableMoves(cellsInfo, cell);
-    case "knight":
+    case FIGURE_TYPE.KNIGHT:
       return getKnightAvailableMoves(cellsInfo, cell);
-    case "bishop":
+    case FIGURE_TYPE.BISHOP:
       return getBishopAvailableMoves(cellsInfo, cell);
-    case "queen":
+    case FIGURE_TYPE.QUEEN:
       return getQueenAvailableMoves(cellsInfo, cell);
-    case "king":
+    case FIGURE_TYPE.KING:
       return getKingAvailableMoves(cellsInfo, cell);
     default:
       throw new Error("Figure type is not defined");
