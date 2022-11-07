@@ -1,6 +1,6 @@
 import { CellInformation } from "types";
 
-export const getPawnAvailableMoves = (cellsInfo: CellInformation[], cell: CellInformation) => {
+const getPawnAvailableMoves = (cellsInfo: CellInformation[], cell: CellInformation) => {
   const availableMoves: string[] = [];
   const figureColor = cell.figure?.color;
 
@@ -43,7 +43,7 @@ export const getPawnAvailableMoves = (cellsInfo: CellInformation[], cell: CellIn
   return availableMoves;
 };
 
-export const getRookAvailableMoves = (cellsInfo: CellInformation[], cell: CellInformation) => {
+const getRookAvailableMoves = (cellsInfo: CellInformation[], cell: CellInformation) => {
   const availableMoves: string[] = [];
   const figureColor = cell.figure?.color;
 
@@ -90,7 +90,7 @@ export const getRookAvailableMoves = (cellsInfo: CellInformation[], cell: CellIn
   return availableMoves;
 };
 
-export const getKnightAvailableMoves = (cellsInfo: CellInformation[], cell: CellInformation) => {
+const getKnightAvailableMoves = (cellsInfo: CellInformation[], cell: CellInformation) => {
   const availableMoves: string[] = [];
   const figureColor = cell.figure?.color;
 
@@ -139,7 +139,7 @@ export const getKnightAvailableMoves = (cellsInfo: CellInformation[], cell: Cell
   return availableMoves;
 };
 
-export const getBishopAvailableMoves = (cellsInfo: CellInformation[], cell: CellInformation) => {
+const getBishopAvailableMoves = (cellsInfo: CellInformation[], cell: CellInformation) => {
   const availableMoves: string[] = [];
   const figureColor = cell.figure?.color;
 
@@ -186,7 +186,7 @@ export const getBishopAvailableMoves = (cellsInfo: CellInformation[], cell: Cell
   return availableMoves;
 };
 
-export const getQueenAvailableMoves = (cellsInfo: CellInformation[], cell: CellInformation) => {
+const getQueenAvailableMoves = (cellsInfo: CellInformation[], cell: CellInformation) => {
   const availableMoves: string[] = [];
   const figureColor = cell.figure?.color;
 
@@ -273,7 +273,7 @@ export const getQueenAvailableMoves = (cellsInfo: CellInformation[], cell: CellI
   return availableMoves;
 };
 
-// TODO need to implement this function
+// ! 2. Get available moves for the king
 export const getKingAvailableMoves = (cellsInfo: CellInformation[], cell: CellInformation) => {
   const availableMoves: string[] = [];
   const figureColor = cell.figure?.color;
@@ -327,4 +327,23 @@ export const getKingAvailableMoves = (cellsInfo: CellInformation[], cell: CellIn
   }
 
   return availableMoves;
+};
+
+export const getAvailableMoves = (cellsInfo: CellInformation[], cell: CellInformation) => {
+  switch (cell.figure?.type) {
+    case "pawn":
+      return getPawnAvailableMoves(cellsInfo, cell);
+    case "rook":
+      return getRookAvailableMoves(cellsInfo, cell);
+    case "knight":
+      return getKnightAvailableMoves(cellsInfo, cell);
+    case "bishop":
+      return getBishopAvailableMoves(cellsInfo, cell);
+    case "queen":
+      return getQueenAvailableMoves(cellsInfo, cell);
+    case "king":
+      return getKingAvailableMoves(cellsInfo, cell);
+    default:
+      throw new Error("Figure type is not defined");
+  }
 };

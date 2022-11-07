@@ -7,37 +7,13 @@ import {
   INITIAL_FIGURE_POSITIONS,
 } from "app-const";
 import { CellInformation, FigureColor, FigureType, GameContextType } from "types";
-import {
-  getBishopAvailableMoves,
-  getColumnKey,
-  getKingAvailableMoves,
-  getKnightAvailableMoves,
-  getPawnAvailableMoves,
-  getQueenAvailableMoves,
-  getRookAvailableMoves,
-} from "utils";
+import { getAvailableMoves, getColumnKey } from "utils";
 
-const getAvailableMoves = (cellsInfo: CellInformation[], cell: CellInformation) => {
-  // * Notation format "1f"
-  switch (cell.figure?.type) {
-    case "pawn":
-      return getPawnAvailableMoves(cellsInfo, cell);
-    case "rook":
-      return getRookAvailableMoves(cellsInfo, cell);
-    case "knight":
-      return getKnightAvailableMoves(cellsInfo, cell);
-    case "bishop":
-      return getBishopAvailableMoves(cellsInfo, cell);
-    case "queen":
-      return getQueenAvailableMoves(cellsInfo, cell);
-    case "king":
-      return getKingAvailableMoves(cellsInfo, cell);
-    default:
-      throw new Error("Figure type is not defined");
-  }
+const checkIfCheck = (cells: CellInformation[], cell: CellInformation) => {
+  return true;
 };
 
-const cellsInformation: CellInformation[] = Array(64)
+const CELLS_INFORMATION: CellInformation[] = Array(64)
   .fill(null)
   .map((_, i) => {
     const [type, color] = INITIAL_FIGURE_POSITIONS?.[B_NOTATION[i]]?.split("-") || [];
@@ -96,7 +72,8 @@ const cellsInformation: CellInformation[] = Array(64)
 
 const gameInitialState = {
   whiteTurn: true,
-  cellsInformation,
+  isCheck: false,
+  cellsInformation: CELLS_INFORMATION,
   move: () => undefined,
   selectedCell: undefined,
 };
@@ -104,9 +81,10 @@ const gameInitialState = {
 export const GameContext = createContext<GameContextType>(gameInitialState);
 
 export const GameProvider = ({ children }: PropsWithChildren) => {
-  const [selectedCell, setSelectedCell] = useState<CellInformation | undefined>(undefined);
-  const [cellsInformation, setCellsInformation] = useState(gameInitialState.cellsInformation);
   const [whiteTurn, setWhiteTurn] = useState(gameInitialState.whiteTurn);
+  const [isCheck, setIsCheck] = useState(false);
+  const [cellsInformation, setCellsInformation] = useState(gameInitialState.cellsInformation);
+  const [selectedCell, setSelectedCell] = useState<CellInformation | undefined>(undefined);
 
   const selectFigure = (cellInfo: CellInformation) => {
     // * If the cell is empty, return or if figure is not of the current player's color
@@ -154,12 +132,22 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const move = (cellInfo: CellInformation) => {
     const isMoving = cellsInformation[B_NOTATION.indexOf(cellInfo.notation)].state === "available";
 
-    if (isMoving) moveFigure(cellInfo);
-    else selectFigure(cellInfo);
+    if (isMoving) {
+      moveFigure(cellInfo);
+      setIsCheck(checkIfCheck(cellsInformation, cellInfo));
+    } else selectFigure(cellInfo);
   };
 
   return (
-    <GameContext.Provider value={{ cellsInformation, whiteTurn, move, selectedCell }}>
+    <GameContext.Provider
+      value={{
+        whiteTurn,
+        isCheck,
+        cellsInformation,
+        move,
+        selectedCell,
+      }}
+    >
       {children}
     </GameContext.Provider>
   );

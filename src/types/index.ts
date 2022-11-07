@@ -1,5 +1,6 @@
 export type GameContextType = {
   whiteTurn: boolean;
+  isCheck: boolean;
   cellsInformation: CellInformation[];
   move: (cellInfo: CellInformation) => void;
   selectedCell?: CellInformation;
