@@ -1,8 +1,7 @@
 import { HTMLAttributes } from "react";
-
-import { Bishop, King, Knight, Pawn, Queen, Rook } from "svg";
-import { FIGURE_TYPE, FigureColor, FigureType } from "types";
-import { makeBEM } from "utils";
+import { Pawn, Knight, Bishop, Rook, Queen, King } from "../../svg";
+import { FigureType, FigureColor, FIGURE_TYPE } from "../../types";
+import { makeBEM } from "../../utils";
 
 const bem = makeBEM("figure");
 

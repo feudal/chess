@@ -1,5 +1,5 @@
-import { CellInformation, FIGURE_TYPE } from "types";
-import { getAvailableMoves } from "utils";
+import { CellInformation, FIGURE_TYPE } from "../types";
+import { getAvailableMoves } from "./figures-moves";
 
 export const checkIfCheck = (cells: CellInformation[], opponentColor: "white" | "black") => {
   const color = opponentColor === "white" ? "black" : "white";

@@ -1,6 +1,5 @@
 import { HTMLAttributes, PropsWithChildren } from "react";
-
-import { makeBEM } from "utils";
+import { makeBEM } from "../../utils";
 
 const bem = makeBEM("cell");
 

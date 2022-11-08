@@ -5,9 +5,9 @@ import {
   BOARD_NOTATION as B_NOTATION,
   COLUMN_NUMBER as COL_NUM,
   INITIAL_FIGURE_POSITIONS,
-} from "app-const";
-import { CellInformation, FigureColor, FigureType, GameContextType } from "types";
-import { checkIfCheck, getAvailableMoves, getColumnKey } from "utils";
+} from "../app-const";
+import { CellInformation, FigureType, FigureColor, GameContextType } from "../types";
+import { getColumnKey, getAvailableMoves, checkIfCheck } from "../utils";
 
 const CELLS_INFORMATION: CellInformation[] = Array(64)
   .fill(null)
@@ -126,6 +126,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   };
 
   const move = (cellInfo: CellInformation) => {
+    console.log("move");
     const isMoving = cellsInformation[B_NOTATION.indexOf(cellInfo.notation)].state === "available";
 
     if (isMoving) {

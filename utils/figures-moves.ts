@@ -1,4 +1,4 @@
-import { CellInformation, FIGURE_TYPE } from "types";
+import { CellInformation, FIGURE_TYPE } from "../types";
 
 const getPawnAvailableMoves = (cellsInfo: CellInformation[], cell: CellInformation) => {
   const availableMoves: string[] = [];

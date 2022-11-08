@@ -1,4 +1,4 @@
-import { COLUMN_NUMBER } from "app-const";
+import { COLUMN_NUMBER } from "../app-const";
 
 export const getColumnKey = (col: string, row: number) => {
   const rowNumber = COLUMN_NUMBER[col] + row;
