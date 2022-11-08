@@ -1,6 +1,7 @@
 .cell {
   aspect-ratio: 1;
   position: relative;
+  border: 1px solid transparent;
 
   &--white {
     background-color: var(--white-cell);
@@ -20,10 +21,15 @@
   &--available {
     cursor: pointer;
   }
+
+  &--active {
+    border: 1px solid var(--active-cell-border);
+  }
   &--selected {
     background-color: var(--selected-cell);
   }
   &--available {
+    border: 1px solid var(--selected-cell);
     background-color: var(--available-cell);
   }
 

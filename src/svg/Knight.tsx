@@ -1,10 +1,11 @@
-export const Knight = () => {
+export const Knight = (props: JSX.IntrinsicElements["svg"]) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       version="1.0"
       preserveAspectRatio="xMidYMid meet"
       viewBox="-0.1 539.2 387.83 383.8"
+      {...props}
     >
       <g
         transform="translate(0.000000,938.000000) scale(0.100000,-0.100000)"
