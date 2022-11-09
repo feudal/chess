@@ -1,6 +1,6 @@
 import Head from "next/head";
 
-import { Board } from "../components";
+import { Board, BoardInfo, Chat, UserList } from "../components";
 import { Layout } from "../layout";
 
 export default function Home() {
@@ -10,7 +10,15 @@ export default function Home() {
         <title>Online chess</title>
       </Head>
 
-      <Layout>
+      <Layout
+        sideBar={
+          <>
+            <BoardInfo />
+            <UserList />
+            <Chat />
+          </>
+        }
+      >
         <Board />
       </Layout>
     </>

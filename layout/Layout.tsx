@@ -1,30 +1,30 @@
 import { PropsWithChildren } from "react";
-import { Knight } from "svg";
+import { UserInfo } from "../components/UserInfo";
 
-import { makeBEM } from "utils";
+import { Knight } from "../svg";
+import { makeBEM } from "../utils";
+
+interface LayoutProps extends PropsWithChildren<{}> {
+  user?: string | null;
+  users?: string[] | null;
+  sideBar?: JSX.Element;
+}
 
 const bem = makeBEM("layout");
-export const Layout = ({ children }: PropsWithChildren) => {
+export const Layout = ({ children, sideBar }: LayoutProps) => {
   return (
     <div className={bem()}>
       <div className={bem("top-bar")}>
         <div className={bem("logo")}>
-          <Knight />
+          <Knight height="40" />
           <span>Chess</span>
-          <Knight className="mirror" />
+          <Knight height="40" className="mirror" />
         </div>
-        player info
+        <UserInfo />
       </div>
       <main className={bem("main")}>
         {children}
-        <div className={bem("side-bar")}>
-          <div className={bem("info")}>
-            board info <br />
-            notations
-          </div>
-          <div className={bem("players")}>players online</div>
-          <div className={bem("chat")}>chat</div>
-        </div>
+        <div className={bem("side-bar")}>{sideBar}</div>
       </main>
     </div>
   );

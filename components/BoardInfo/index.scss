@@ -1,0 +1,9 @@
+.board-info {
+  border: 1px solid var(--white-cell);
+  margin-bottom: 5px;
+  padding: 5px;
+
+  &:focus {
+    border: 1px solid var(--black-cell);
+  }
+}
