@@ -53,4 +53,6 @@ const INITIAL_FIGURE_POSITIONS: { [key: string]: string } = {
 
 const COLUMN_NUMBER: Record<string, number> = { a: 1, b: 2, c: 3, d: 4, e: 5, f: 6, g: 7, h: 8 };
 
-export { BOARD_CELLS, BOARD_NOTATION, INITIAL_FIGURE_POSITIONS, COLUMN_NUMBER };
+const LS_USER_NAME = "USER";
+
+export { BOARD_CELLS, BOARD_NOTATION, INITIAL_FIGURE_POSITIONS, COLUMN_NUMBER, LS_USER_NAME };
