@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { Users } from "../../svg";
 import { User } from "../../types";
 import { makeBEM } from "../../utils";
+import { Title } from "../Title";
 
 const bem = makeBEM("user-list");
 
@@ -19,10 +20,7 @@ export const UserList = () => {
 
   return (
     <div className={bem()}>
-      <h3 className={bem("title")}>
-        <Users />
-        User List
-      </h3>
+      <Title icon={<Users />}>User list</Title>
       <ul>
         {users.map((user) => (
           <li key={user?._id}>{user?.name}</li>

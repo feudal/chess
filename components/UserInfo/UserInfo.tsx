@@ -47,7 +47,7 @@ export const UserInfo = () => {
       {isEdit ? (
         <input
           ref={ref}
-          className={bem("input")}
+          className={bem("name")}
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
@@ -56,7 +56,8 @@ export const UserInfo = () => {
         />
       ) : (
         <>
-          {name}
+          <div className={bem("name")}>{name}</div>
+
           <Edit
             className="cursor-pointer"
             onClick={() => {
