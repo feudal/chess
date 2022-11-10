@@ -13,7 +13,7 @@ const bem = makeBEM("user-list");
 
 let socket;
 
-const getDataAndSet = async (setUsers: Dispatch<React.SetStateAction<User[]>>) => {
+const getUsersAndSetThem = async (setUsers: Dispatch<React.SetStateAction<User[]>>) => {
   fetch("/api/users")
     .then((res) => res.json())
     .then((data) => setUsers(data))
@@ -33,12 +33,12 @@ export const UserList = () => {
   };
 
   useEffect(() => {
-    getDataAndSet(setUsers);
+    getUsersAndSetThem(setUsers);
     socketInitializer();
   }, []);
 
   useEffect(() => {
-    getDataAndSet(setUsers);
+    getUsersAndSetThem(setUsers);
     setNeedUpdate(false);
   }, [needUpdate]);
 
