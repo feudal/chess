@@ -55,4 +55,15 @@ const COLUMN_NUMBER: Record<string, number> = { a: 1, b: 2, c: 3, d: 4, e: 5, f:
 
 const LS_USER_NAME = "USER";
 
-export { BOARD_CELLS, BOARD_NOTATION, INITIAL_FIGURE_POSITIONS, COLUMN_NUMBER, LS_USER_NAME };
+const SO_EVENTS = {
+  USER_CHANGED: "user-changed",
+};
+
+export {
+  BOARD_CELLS,
+  BOARD_NOTATION,
+  INITIAL_FIGURE_POSITIONS,
+  COLUMN_NUMBER,
+  LS_USER_NAME,
+  SO_EVENTS,
+};
