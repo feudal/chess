@@ -13,12 +13,12 @@ const bem = makeBEM("user-list");
 
 let socket;
 
-// const getDataAndSet = async (setUsers: Dispatch<React.SetStateAction<User[]>>) => {
-//   fetch("/api/users")
-//     .then((res) => res.json())
-//     .then((data) => setUsers(data))
-//     .catch((err) => toast.error(err));
-// };
+const getDataAndSet = async (setUsers: Dispatch<React.SetStateAction<User[]>>) => {
+  fetch("/api/users")
+    .then((res) => res.json())
+    .then((data) => setUsers(data))
+    .catch((err) => toast.error(err));
+};
 
 export const UserList = () => {
   const [users, setUsers] = useState<User[]>([]);
@@ -28,29 +28,17 @@ export const UserList = () => {
     await axios("/api/socket");
     socket = io();
 
-    socket.on("connect", () => {
-      console.log("user-list connected");
-    });
-
-    socket.on(SO_EVENTS.USER_CHANGED, () => {
-      setNeedUpdate(true);
-      console.log("user changed");
-    });
+    socket.on("connect", () => console.log("user-list connected"));
+    socket.on(SO_EVENTS.USER_CHANGED, () => setNeedUpdate(true));
   };
 
   useEffect(() => {
-    fetch("/api/users")
-      .then((res) => res.json())
-      .then((data) => setUsers(data))
-      .catch((err) => toast.error(err));
+    getDataAndSet(setUsers);
     socketInitializer();
   }, []);
 
   useEffect(() => {
-    fetch("/api/users")
-      .then((res) => res.json())
-      .then((data) => setUsers(data))
-      .catch((err) => toast.error(err));
+    getDataAndSet(setUsers);
     setNeedUpdate(false);
   }, [needUpdate]);
 

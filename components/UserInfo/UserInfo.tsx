@@ -20,9 +20,7 @@ export const UserInfo = () => {
     await axios("/api/socket");
     socket = io();
 
-    socket.on("connect", () => {
-      console.log("user-info connected");
-    });
+    socket.on("connect", () => console.log("user-info connected"));
   };
 
   useEffect(() => {
