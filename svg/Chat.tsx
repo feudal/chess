@@ -1,14 +1,13 @@
-export const Chat = () => {
+export const Chat = (props: JSX.IntrinsicElements["svg"]) => {
   return (
     <svg
       width="24"
       height="24"
-      version="1.1"
-      id="Capa_1"
       xmlns="http://www.w3.org/2000/svg"
       x="0px"
       y="0px"
       viewBox="0 0 297 297"
+      {...props}
     >
       <g>
         <path

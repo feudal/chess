@@ -1,6 +1,6 @@
-export const Clock = () => {
+export const Clock = (props: JSX.IntrinsicElements["svg"]) => {
   return (
-    <svg width="24" height="24" x="0px" y="0px" viewBox="0 0 466.008 466.008">
+    <svg {...props} width="24" height="24" x="0px" y="0px" viewBox="0 0 466.008 466.008">
       <g>
         <g>
           <path

@@ -1,6 +1,6 @@
-export const Users = () => {
+export const Users = (props: JSX.IntrinsicElements["svg"]) => {
   return (
-    <svg width="24" height="24" viewBox="0 0 35.695 35.695">
+    <svg {...props} width="24" height="24" viewBox="0 0 35.695 35.695">
       <g>
         <path
           d="M11.558,10.767c0-3.473,2.815-6.29,6.289-6.29c3.476,0,6.289,2.817,6.289,6.29c0,3.475-2.813,6.29-6.289,6.29

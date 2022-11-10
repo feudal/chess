@@ -1,10 +1,11 @@
-export const Bishop = () => {
+export const Bishop = (props: JSX.IntrinsicElements["svg"]) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       version="1.0"
       preserveAspectRatio="xMidYMid meet"
       viewBox="442.1 488.11 420 449.89"
+      {...props}
     >
       <g
         transform="translate(0.000000,938.000000) scale(0.100000,-0.100000)"

@@ -1,10 +1,11 @@
-export const Queen = () => {
+export const Queen = (props: JSX.IntrinsicElements["svg"]) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       version="1.0"
       preserveAspectRatio="xMidYMid meet"
       viewBox="421.15 0.29 450.38 419.36"
+      {...props}
     >
       <g
         transform="translate(0.000000,938.000000) scale(0.100000,-0.100000)"

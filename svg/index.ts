@@ -11,3 +11,4 @@ export * from "./Chat";
 export * from "./User";
 export * from "./Users";
 export * from "./Clock";
+export * from "./Send";
