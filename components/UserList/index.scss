@@ -8,4 +8,24 @@
   &:hover {
     border: 1px solid var(--black-cell);
   }
+
+  &__item {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 2px 5px;
+    border-bottom: 1px solid var(--white-cell);
+    transition: all 0.3s ease-in-out;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    &:hover {
+      background-color: var(--white-cell);
+    }
+    &--active {
+      background-color: var(--white-cell);
+    }
+  }
 }

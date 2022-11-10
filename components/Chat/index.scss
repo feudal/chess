@@ -1,9 +1,56 @@
 .chat {
+  overflow-y: auto;
   border: 1px solid var(--white-cell);
   margin-bottom: 5px;
   padding: 5px;
 
+  display: flex;
+  flex-direction: column;
+
+  &__wrapper {
+    margin-top: auto;
+  }
+
   &:hover {
     border: 1px solid var(--black-cell);
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    padding: 2px 5px;
+  }
+
+  &__time {
+    font-size: 12px;
+    color: var(--gray);
+  }
+  &__user {
+    font-weight: bold;
+    margin-right: 5px;
+  }
+
+  &__input {
+    position: sticky;
+    bottom: 0;
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+
+    input {
+      flex: 1;
+      padding: 2px 5px;
+    }
+  }
+
+  &__emoji,
+  &__button {
+    cursor: pointer;
+    margin-left: 5px;
+    transition: all 0.3s ease-in-out;
+
+    &:hover {
+      transform: scale(1.2);
+    }
   }
 }

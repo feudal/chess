@@ -2,6 +2,9 @@
   position: sticky;
   background: #fff;
   top: 0;
+  left: 0;
   display: flex;
   align-items: center;
+  padding: 0 3px 3px;
+  border-bottom: 1px solid var(--white-cell);
 }
