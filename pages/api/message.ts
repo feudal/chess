@@ -8,7 +8,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const message = await Message.create({
       room: req.body.room,
-      user_name: req.body.user_name,
+      user: req.body.user._id,
       text: req.body.text,
     });
 

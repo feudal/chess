@@ -19,7 +19,7 @@ export const Chat = () => {
     await axios
       .post(`/api/message`, {
         room: room?._id,
-        user_name: user?.name,
+        user,
         text,
       })
       .catch((err) => toast.error(err));
@@ -33,10 +33,12 @@ export const Chat = () => {
 
       <div className={bem("wrapper")}>
         <ul>
-          {room?.messages.map((msg) => (
-            <li key={msg.time} className={bem("item")}>
+          {room?.messages.map((msg, idx) => (
+            <li key={idx} className={bem("item")}>
               <span className={bem("time")}>{new Date(msg.createdAt).toLocaleTimeString()} </span>
-              <span className={bem("user")}>: {msg.user_name}:</span>
+              <span className={bem("user")}>
+                : {msg.user._id === user?._id ? "You" : msg.user.name}:
+              </span>
               <span className={bem("message")}>{msg.text}</span>
             </li>
           ))}

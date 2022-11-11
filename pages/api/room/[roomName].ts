@@ -12,7 +12,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (!room) {
       room = await Room.findOne({ name: String(req.query.roomName) });
     }
-    await room?.populate("messages");
+    await room?.populate({ path: "messages", populate: { path: "user" } });
 
     if (!room) {
       room = await Room.create({

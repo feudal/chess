@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
+import { User } from ".";
 
 const MessageSchema = new mongoose.Schema(
   {
-    id: String,
     text: { type: String, required: true },
-    user_name: { type: String, required: true },
+    user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   },
   {
     timestamps: true,

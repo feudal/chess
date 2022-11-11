@@ -2,7 +2,6 @@ import mongoose from "mongoose";
 
 const RoomSchema = new mongoose.Schema(
   {
-    id: String,
     name: { type: String, required: true },
     messages: [{ type: mongoose.Schema.Types.ObjectId, ref: "Message" }],
   },

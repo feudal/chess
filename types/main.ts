@@ -9,8 +9,9 @@ export interface User extends TimeInfo {
 }
 
 export interface Message extends TimeInfo {
+  _id: string;
   time: string;
-  user_name: string;
+  user: User;
   text: string;
 }
 
