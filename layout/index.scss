@@ -33,11 +33,13 @@
     display: flex;
   }
   &__side-bar {
+    overflow: hidden;
     height: 100%;
     width: 100%;
     max-height: calc(100vh - 50px);
     display: grid;
-    grid-template-rows: 1fr 1fr 1fr;
+    gap: 5px;
+    grid-template-rows: 33% 33% 33%;
     grid-template-columns: 1fr;
     margin-left: 5px;
   }

@@ -1,8 +1,7 @@
 .user-list {
   position: relative;
   border: 1px solid var(--white-cell);
-  margin-bottom: 5px;
-  padding: 0 5px;
+  padding: 5px;
   overflow-y: auto;
 
   &:hover {
