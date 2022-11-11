@@ -1,14 +1,14 @@
-import { SO_EVENTS } from "../../app-const";
-import { GameContext } from "../../context";
-import { Users } from "../../svg";
-import { Room, User } from "../../types";
-import { makeBEM } from "../../utils";
 import axios from "axios";
 import React, { Dispatch, useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import io from "Socket.IO-client";
 
 import { Title } from "..";
+import { SO_EVENTS } from "../../app-const";
+import { GameContext } from "../../context";
+import { Users } from "../../svg";
+import { Room, User } from "../../types";
+import { makeBEM } from "../../utils";
 
 const bem = makeBEM("user-list");
 

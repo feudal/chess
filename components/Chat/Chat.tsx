@@ -3,12 +3,12 @@ import axios from "axios";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { io, Socket } from "Socket.IO-client";
-import { SO_EVENTS } from "../../app-const";
 
+import { SO_EVENTS } from "../../app-const";
 import { GameContext } from "../../context";
 import { Chat as ChatIcon, Send } from "../../svg";
 import { Room } from "../../types";
-import { makeBEM } from "../../utils";
+import { getError, makeBEM } from "../../utils";
 import { Title } from "../Title";
 
 const bem = makeBEM("chat");
@@ -34,8 +34,11 @@ export const Chat = () => {
 
   useEffect(() => {
     const getRoom = async () => {
-      const { data } = await axios<Room>(`/api/room/${room?.name}`);
-      setRoom(data);
+      if (room?.name) {
+        axios<Room>(`/api/room/${room?.name}`)
+          .then((res) => setRoom(res.data))
+          .catch((err) => toast.error(getError(err)));
+      }
     };
     getRoom();
 

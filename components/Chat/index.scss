@@ -55,6 +55,7 @@
 
   &__emoji,
   &__button {
+    flex-shrink: 0;
     cursor: pointer;
     margin-left: 5px;
     transition: all 0.3s ease-in-out;

@@ -5,6 +5,10 @@ import { db } from "../../../utils";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "GET") {
+    if (!req.query.roomName) {
+      res.status(400).json({ message: "Missing room name" });
+      return;
+    }
     await db.connect();
     const [first, second] = String(req.query.roomName)?.split("-");
     let room = await Room.findOne({ name: `${second}-${first}` });
