@@ -6,3 +6,4 @@ export * from "./Figure";
 export * from "./UserInfo";
 export * from "./UserList";
 export * from "./Title";
+export * from "./Timer";

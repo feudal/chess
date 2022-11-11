@@ -8,7 +8,15 @@ import {
   INITIAL_FIGURE_POSITIONS,
   LS_USER_NAME,
 } from "../app-const";
-import { CellInformation, FigureColor, FigureType, GameContextType, Room, User } from "../types";
+import {
+  CellInformation,
+  FigureColor,
+  FigureType,
+  GameContextType,
+  GameStatusEnum,
+  Room,
+  User,
+} from "../types";
 import { checkIfCheck, getAvailableMoves, getColumnKey } from "../utils";
 
 const CELLS_INFORMATION: CellInformation[] = Array(64)
@@ -69,6 +77,7 @@ const CELLS_INFORMATION: CellInformation[] = Array(64)
   });
 
 const gameInitialState = {
+  gameStatus: GameStatusEnum.NOT_STARTED,
   whiteTurn: true,
   isCheck: false,
   cellsInformation: CELLS_INFORMATION,
@@ -82,6 +91,7 @@ const gameInitialState = {
 export const GameContext = createContext<GameContextType>(gameInitialState);
 
 export const GameProvider = ({ children }: PropsWithChildren) => {
+  const [gameStatus, setGameStatus] = useState(GameStatusEnum.NOT_STARTED);
   const [whiteTurn, setWhiteTurn] = useState(gameInitialState.whiteTurn);
   const [isCheck, setIsCheck] = useState(false);
   const [cellsInformation, setCellsInformation] = useState(gameInitialState.cellsInformation);
@@ -126,6 +136,9 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   };
 
   const moveFigure = (cellInfo: CellInformation) => {
+    // ! Need to call this function only once after the move
+    setGameStatus(GameStatusEnum.PLAYING);
+
     setCellsInformation((prev) => {
       return prev.map((cell) => {
         // * change white turn to opposite
@@ -161,6 +174,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   return (
     <GameContext.Provider
       value={{
+        gameStatus,
         whiteTurn,
         isCheck,
         cellsInformation,

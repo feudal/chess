@@ -1,6 +1,15 @@
 import { Room, User } from ".";
 
+export enum GameStatusEnum {
+  NOT_STARTED = "NOT_STARTED",
+  PLAYING = "PLAYING",
+  DRAW = "DRAW",
+  WHITE_WON = "WHITE_WON",
+  BLACK_WON = "BLACK_WON",
+}
+
 export type GameContextType = {
+  gameStatus: keyof typeof GameStatusEnum;
   whiteTurn: boolean;
   isCheck: boolean;
   cellsInformation: CellInformation[];
