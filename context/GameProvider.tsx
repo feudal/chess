@@ -17,7 +17,7 @@ import {
   Room,
   User,
 } from "../types";
-import { checkIfCheck, getAvailableMoves, getColumnKey } from "../utils";
+import { checkIfCheck, createNotation, getAvailableMoves, getColumnKey } from "../utils";
 
 const CELLS_INFORMATION: CellInformation[] = Array(64)
   .fill(null)
@@ -86,6 +86,8 @@ const gameInitialState = {
 
   room: undefined,
   setRoom: () => undefined,
+  notations: [],
+  setNotations: () => undefined,
 };
 
 export const GameContext = createContext<GameContextType>(gameInitialState);
@@ -98,6 +100,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const [selectedCell, setSelectedCell] = useState<CellInformation | undefined>(undefined);
   const [room, setRoom] = useState<Room>();
   const [user, setUser] = useState<User>();
+  const [notations, setNotations] = useState<string[]>([]);
 
   useEffect(() => {
     const handleChangeStorage = () => {
@@ -137,7 +140,12 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const moveFigure = (cellInfo: CellInformation) => {
     // ! Need to call this function only once after the move
+    // TODO: fix this
     setGameStatus(GameStatusEnum.PLAYING);
+
+    // ! isCheck is not working properly
+    // TODO: fix isCheck
+    setNotations((prev) => [...prev, createNotation(whiteTurn, selectedCell!, cellInfo, isCheck)]);
 
     setCellsInformation((prev) => {
       return prev.map((cell) => {
@@ -184,6 +192,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         room,
         setRoom,
         user,
+        notations,
+        setNotations,
       }}
     >
       {children}

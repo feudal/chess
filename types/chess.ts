@@ -19,6 +19,8 @@ export type GameContextType = {
   room?: Room;
   setRoom: (room: Room) => void;
   user?: User;
+  notations: string[];
+  setNotations: (notation: string[]) => void;
 };
 
 export enum FIGURE_TYPE {
@@ -28,6 +30,24 @@ export enum FIGURE_TYPE {
   BISHOP = "BISHOP",
   KNIGHT = "KNIGHT",
   PAWN = "PAWN",
+}
+
+export enum WHITE_FIGURE_TYPE_NOTATION {
+  KING = "♔",
+  QUEEN = "♕",
+  ROOK = "♖",
+  BISHOP = "♗",
+  KNIGHT = "♘",
+  PAWN = "♙",
+}
+
+export enum BLACK_FIGURE_TYPE_NOTATION {
+  KING = "♚",
+  QUEEN = "♛",
+  ROOK = "♜",
+  BISHOP = "♝",
+  KNIGHT = "♞",
+  PAWN = "♟",
 }
 
 export type FigureType =

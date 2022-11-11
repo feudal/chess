@@ -1,14 +1,20 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useRef } from "react";
+
 import { Timer } from "..";
 import { GameContext } from "../../context";
-import { Board, Clock, King } from "../../svg";
+import { Board, Clock } from "../../svg";
 import { makeBEM } from "../../utils";
 import { Title } from "../Title";
 
 const bem = makeBEM("board-info");
 
 export const BoardInfo = () => {
-  const { gameStatus, whiteTurn } = useContext(GameContext);
+  const { gameStatus, whiteTurn, notations } = useContext(GameContext);
+  const bottomRef = useRef<HTMLSpanElement>(null);
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [notations]);
 
   return (
     <div className={bem()}>
@@ -21,6 +27,18 @@ export const BoardInfo = () => {
         <Title icon={<div className={bem("square", { black: !whiteTurn })}></div>}>{`${
           whiteTurn ? "White" : "Black"
         } turn`}</Title>
+      </div>
+      <div className={bem("notation")}>
+        <Title>Notation</Title>
+        <div className={bem("notation-wrapper")}>
+          {notations.map((notation, index) => (
+            <span key={index} className={bem("notation-item")}>
+              <span className={bem("notation-order")}>{index + 1}.</span>
+              {notation}
+            </span>
+          ))}
+          <span ref={bottomRef}></span>
+        </div>
       </div>
     </div>
   );

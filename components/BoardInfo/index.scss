@@ -1,6 +1,10 @@
 .board-info {
+  overflow: hidden;
   border: 1px solid var(--white-cell);
   padding: 5px;
+
+  display: flex;
+  flex-direction: column;
 
   &:focus {
     border: 1px solid var(--black-cell);
@@ -16,6 +20,25 @@
     height: 24px;
     &--black {
       background-color: var(--black-cell);
+    }
+  }
+
+  &__notation {
+    border-left: 1px solid var(--white-cell);
+    border-bottom: 1px solid var(--white-cell);
+    height: 100%;
+    overflow-y: scroll;
+
+    &-wrapper {
+      padding: 5px;
+    }
+
+    &-item {
+      display: inline-block;
+      margin-right: 5px;
+    }
+    &-order {
+      font-weight: bold;
     }
   }
 }
