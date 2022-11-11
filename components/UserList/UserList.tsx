@@ -53,15 +53,17 @@ export const UserList = () => {
     <div className={bem()}>
       <Title icon={<Users />}>User list</Title>
       <ul>
-        {users.map((user) => (
-          <li
-            key={user?._id}
-            className={bem("item", { active: room?.name.includes(user._id) })}
-            onClick={() => handleRoomChange(user)}
-          >
-            {user?.name}
-          </li>
-        ))}
+        {users
+          .filter((user) => user._id !== mainUser?._id)
+          .map((user) => (
+            <li
+              key={user?._id}
+              className={bem("item", { active: room?.name.includes(user._id) })}
+              onClick={() => handleRoomChange(user)}
+            >
+              {user?.name}
+            </li>
+          ))}
       </ul>
     </div>
   );

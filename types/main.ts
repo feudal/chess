@@ -17,6 +17,5 @@ export interface Message extends TimeInfo {
 export interface Room {
   _id: string;
   name: string;
-  users: User[];
   messages: Message[];
 }

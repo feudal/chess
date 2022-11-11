@@ -1,8 +1,7 @@
+import { User } from "../../../models";
+import { db } from "../../../utils";
 import { nanoid } from "nanoid";
 import { NextApiRequest, NextApiResponse } from "next";
-
-import { User } from "../../models";
-import { db } from "../../utils";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "GET") {
@@ -34,6 +33,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       await db.disconnect();
       res.status(200).json(user);
     }
+  } else {
+    res.status(400).json({ message: "Bad request" });
   }
 };
 
