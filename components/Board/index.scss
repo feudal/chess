@@ -1,6 +1,6 @@
 .board {
   aspect-ratio: 1;
-  max-height: calc(100vh - 50px);
+  height: calc(100vh - 50px);
 
   display: grid;
   grid-template-columns: repeat(8, 1fr);

@@ -1,12 +1,11 @@
 .user-list {
   position: relative;
-  border: 1px solid var(--white-cell);
+  border: 1px solid var(--black-cell);
+  border-right: none;
+  border-top: none;
   padding: 5px;
+  margin-right: 5px;
   overflow-y: auto;
-
-  &:hover {
-    border: 1px solid var(--black-cell);
-  }
 
   &__item {
     cursor: pointer;

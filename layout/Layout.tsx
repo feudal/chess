@@ -19,9 +19,9 @@ export const Layout = ({ children, sideBar }: LayoutProps) => {
       <div className={bem()}>
         <div className={bem("top-bar")}>
           <div className={bem("logo")}>
-            <Knight height="40" />
-            <span>Chess</span>
             <Knight height="40" className="mirror" />
+            <span>Chess</span>
+            <Knight height="40" />
           </div>
           <UserInfo />
         </div>

@@ -1,14 +1,11 @@
 .board-info {
   overflow: hidden;
-  border: 1px solid var(--white-cell);
+  border: 1px solid var(--black-cell);
+  border-top: none;
   padding: 5px;
 
   display: flex;
   flex-direction: column;
-
-  &:focus {
-    border: 1px solid var(--black-cell);
-  }
 
   &__block {
     display: grid;
