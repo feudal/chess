@@ -51,6 +51,7 @@ export const UserInfo = () => {
           toast.success("Name updated", { toastId: "name-updated" });
 
           socket.emit(SO_EVENTS.USER_CHANGED);
+          window.dispatchEvent(new Event("storage"));
         })
         .catch((err) => toast.error(getError(err)));
     }

@@ -1,9 +1,15 @@
+import { Room, User } from ".";
+
 export type GameContextType = {
   whiteTurn: boolean;
   isCheck: boolean;
   cellsInformation: CellInformation[];
   move: (cellInfo: CellInformation) => void;
   selectedCell?: CellInformation;
+
+  room?: Room;
+  setRoom: (room: Room) => void;
+  user?: User;
 };
 
 export enum FIGURE_TYPE {

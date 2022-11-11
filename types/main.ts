@@ -1,13 +1,16 @@
-export interface User {
-  _id: string;
-  name: string;
+export interface TimeInfo {
   createdAt: string;
   updatedAt: string;
 }
 
-export interface Message {
+export interface User extends TimeInfo {
+  _id: string;
+  name: string;
+}
+
+export interface Message extends TimeInfo {
   time: string;
-  user: User;
+  user_name: string;
   text: string;
 }
 

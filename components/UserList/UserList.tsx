@@ -1,13 +1,14 @@
+import { SO_EVENTS } from "../../app-const";
+import { GameContext } from "../../context";
+import { Users } from "../../svg";
+import { Room, User } from "../../types";
+import { makeBEM } from "../../utils";
 import axios from "axios";
-import React, { Dispatch, useEffect, useState } from "react";
+import React, { Dispatch, useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import io from "Socket.IO-client";
 
-import { SO_EVENTS } from "../../app-const";
-import { Users } from "../../svg";
-import { User } from "../../types";
-import { makeBEM } from "../../utils";
-import { Title } from "../Title";
+import { Title } from "..";
 
 const bem = makeBEM("user-list");
 
@@ -21,6 +22,7 @@ const getUsersAndSetThem = async (setUsers: Dispatch<React.SetStateAction<User[]
 };
 
 export const UserList = () => {
+  const { room, setRoom, user: mainUser } = useContext(GameContext);
   const [users, setUsers] = useState<User[]>([]);
   const [needUpdate, setNeedUpdate] = useState(false);
 
@@ -42,12 +44,23 @@ export const UserList = () => {
     setNeedUpdate(false);
   }, [needUpdate]);
 
+  const handleRoomChange = async (user: User) => {
+    const { data } = await axios<Room>(`/api/room/${mainUser?._id}-${user._id}`);
+    setRoom(data);
+  };
+
   return (
     <div className={bem()}>
       <Title icon={<Users />}>User list</Title>
       <ul>
         {users.map((user) => (
-          <li key={user?._id}>{user?.name}</li>
+          <li
+            key={user?._id}
+            className={bem("item", { active: room?.name.includes(user._id) })}
+            onClick={() => handleRoomChange(user)}
+          >
+            {user?.name}
+          </li>
         ))}
       </ul>
     </div>

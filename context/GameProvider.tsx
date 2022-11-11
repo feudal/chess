@@ -1,3 +1,4 @@
+import axios from "axios";
 import { createContext, PropsWithChildren, useEffect, useState } from "react";
 
 import {
@@ -5,9 +6,10 @@ import {
   BOARD_NOTATION as B_NOTATION,
   COLUMN_NUMBER as COL_NUM,
   INITIAL_FIGURE_POSITIONS,
+  LS_USER_NAME,
 } from "../app-const";
-import { CellInformation, FigureType, FigureColor, GameContextType } from "../types";
-import { getColumnKey, getAvailableMoves, checkIfCheck } from "../utils";
+import { CellInformation, FigureColor, FigureType, GameContextType, Room, User } from "../types";
+import { checkIfCheck, getAvailableMoves, getColumnKey } from "../utils";
 
 const CELLS_INFORMATION: CellInformation[] = Array(64)
   .fill(null)
@@ -72,6 +74,9 @@ const gameInitialState = {
   cellsInformation: CELLS_INFORMATION,
   move: () => undefined,
   selectedCell: undefined,
+
+  room: undefined,
+  setRoom: () => undefined,
 };
 
 export const GameContext = createContext<GameContextType>(gameInitialState);
@@ -81,6 +86,21 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const [isCheck, setIsCheck] = useState(false);
   const [cellsInformation, setCellsInformation] = useState(gameInitialState.cellsInformation);
   const [selectedCell, setSelectedCell] = useState<CellInformation | undefined>(undefined);
+  const [room, setRoom] = useState<Room>();
+  const [user, setUser] = useState<User>();
+
+  useEffect(() => {
+    const handleChangeStorage = () => {
+      const userName = localStorage.getItem(LS_USER_NAME);
+      if (userName) {
+        axios(`/api/user/${userName}`).then((res) => setUser(res.data));
+      }
+    };
+    handleChangeStorage();
+
+    window.addEventListener("storage", handleChangeStorage);
+    return () => window.removeEventListener("storage", handleChangeStorage);
+  }, []);
 
   const selectFigure = (cellInfo: CellInformation) => {
     // * If the cell is empty, return or if figure is not of the current player's color
@@ -146,6 +166,10 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         cellsInformation,
         move,
         selectedCell,
+
+        room,
+        setRoom,
+        user,
       }}
     >
       {children}
