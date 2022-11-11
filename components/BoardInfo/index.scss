@@ -5,4 +5,17 @@
   &:focus {
     border: 1px solid var(--black-cell);
   }
+
+  &__block {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  &__square {
+    border: 2px solid var(--black-cell);
+    width: 24px;
+    height: 24px;
+    &--black {
+      background-color: var(--black-cell);
+    }
+  }
 }

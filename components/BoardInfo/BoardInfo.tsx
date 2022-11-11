@@ -1,18 +1,27 @@
 import React, { useContext } from "react";
 import { Timer } from "..";
 import { GameContext } from "../../context";
-import { Board, Clock } from "../../svg";
+import { Board, Clock, King } from "../../svg";
+import { makeBEM } from "../../utils";
 import { Title } from "../Title";
 
+const bem = makeBEM("board-info");
+
 export const BoardInfo = () => {
-  const { gameStatus } = useContext(GameContext);
+  const { gameStatus, whiteTurn } = useContext(GameContext);
 
   return (
-    <div className="board-info">
+    <div className={bem()}>
       <Title icon={<Board />}>Board info</Title>
-      <Title icon={<Clock />}>
-        <Timer status={gameStatus} />
-      </Title>
+      <div className={bem("block")}>
+        <Title icon={<Clock />}>
+          <Timer status={gameStatus} />
+        </Title>
+
+        <Title icon={<div className={bem("square", { black: !whiteTurn })}></div>}>{`${
+          whiteTurn ? "White" : "Black"
+        } turn`}</Title>
+      </div>
     </div>
   );
 };

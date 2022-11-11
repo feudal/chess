@@ -3,17 +3,18 @@
   position: relative;
   border: 1px solid transparent;
 
+  &__notation {
+    color: var(--notation-color);
+    position: absolute;
+    bottom: 0;
+    right: 0;
+  }
+
   &--white {
     background-color: var(--white-cell);
-    .cell__notation {
-      color: var(--notation-color);
-    }
   }
   &--black {
     background-color: var(--black-cell);
-    .cell__notation {
-      color: var(--notation-color);
-    }
   }
 
   &--active,
@@ -22,18 +23,11 @@
     cursor: pointer;
   }
 
-  &--active {
-    border: 1px solid var(--active-cell-border);
-  }
   &--selected {
     background-color: var(--selected-cell);
   }
   &--available {
     border: 1px solid var(--selected-cell);
     background-color: var(--available-cell);
-  }
-
-  &__notation {
-    position: absolute;
   }
 }
