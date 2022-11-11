@@ -57,6 +57,7 @@ const LS_USER_NAME = "USER";
 
 const SO_EVENTS = {
   USER_CHANGED: "user-changed",
+  MESSAGE_SENT: "message-sent",
 };
 
 export {

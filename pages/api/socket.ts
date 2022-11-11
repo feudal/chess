@@ -17,6 +17,10 @@ const SocketHandler = (req: NextApiRequest, res: any) => {
       socket.on(SO_EVENTS.USER_CHANGED, () => {
         socket.broadcast.emit(SO_EVENTS.USER_CHANGED);
       });
+
+      socket.on(SO_EVENTS.MESSAGE_SENT, (message) => {
+        socket.broadcast.emit(SO_EVENTS.MESSAGE_SENT, message);
+      });
     });
   }
   res.end();
