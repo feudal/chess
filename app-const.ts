@@ -1,3 +1,6 @@
+import { CellInformation, FigureType, FigureColor } from "./types";
+import { getColumnKey } from "./utils";
+
 type CellColor = "white" | "black";
 
 const BOARD_CELLS: CellColor[][] = [
@@ -53,6 +56,63 @@ const INITIAL_FIGURE_POSITIONS: { [key: string]: string } = {
 
 const COLUMN_NUMBER: Record<string, number> = { a: 1, b: 2, c: 3, d: 4, e: 5, f: 6, g: 7, h: 8 };
 
+const CELLS_INFORMATION: CellInformation[] = Array(64)
+  .fill(null)
+  .map((_, i) => {
+    const [type, color] = INITIAL_FIGURE_POSITIONS?.[BOARD_NOTATION[i]]?.split("-") || [];
+    const figure = type ? { type: type as FigureType, color: color as FigureColor } : undefined;
+
+    const [row, column] = BOARD_NOTATION[i].split("");
+
+    const up = (cells: CellInformation[], step = 1) => {
+      if (+row + step > 8) return undefined;
+      return cells[BOARD_NOTATION.indexOf(`${+row + step}${column}`)];
+    };
+    const down = (cells: CellInformation[], step = 1) => {
+      if (+row - step < 0) return undefined;
+      return cells[BOARD_NOTATION.indexOf(`${+row - step}${column}`)];
+    };
+    const left = (cells: CellInformation[], step = 1) => {
+      if (COLUMN_NUMBER[column] - step < 0) return undefined;
+      return cells[BOARD_NOTATION.indexOf(`${row}${getColumnKey(column, -step)}`)];
+    };
+    const right = (cells: CellInformation[], step = 1) => {
+      if (COLUMN_NUMBER[column] + step > 8) return undefined;
+      return cells[BOARD_NOTATION.indexOf(`${row}${getColumnKey(column, step)}`)];
+    };
+    const upLeft = (cells: CellInformation[], step = 1) => {
+      if (+row + step > 8 || COLUMN_NUMBER[column] - step < 0) return undefined;
+      return cells[BOARD_NOTATION.indexOf(`${+row + step}${getColumnKey(column, -step)}`)];
+    };
+    const upRight = (cells: CellInformation[], step = 1) => {
+      if (+row + step > 8 || COLUMN_NUMBER[column] + step > 8) return undefined;
+      return cells[BOARD_NOTATION.indexOf(`${+row + step}${getColumnKey(column, step)}`)];
+    };
+    const downLeft = (cells: CellInformation[], step = 1) => {
+      if (+row - step < 0 || COLUMN_NUMBER[column] - step < 0) return undefined;
+      return cells[BOARD_NOTATION.indexOf(`${+row - step}${getColumnKey(column, -step)}`)];
+    };
+    const downRight = (cells: CellInformation[], step = 1) => {
+      if (+row - step < 0 || COLUMN_NUMBER[column] + step > 8) return undefined;
+      return cells[BOARD_NOTATION.indexOf(`${+row - step}${getColumnKey(column, step)}`)];
+    };
+
+    return {
+      color: BOARD_CELLS[i % 8][Math.floor(i / 8)],
+      notation: BOARD_NOTATION[i],
+      state: color === "white" ? "active" : undefined,
+      figure,
+      up,
+      down,
+      left,
+      right,
+      upLeft,
+      upRight,
+      downLeft,
+      downRight,
+    };
+  });
+
 const LS_USER_NAME = "USER";
 
 const SO_EVENTS = {
@@ -67,4 +127,5 @@ export {
   COLUMN_NUMBER,
   LS_USER_NAME,
   SO_EVENTS,
+  CELLS_INFORMATION,
 };

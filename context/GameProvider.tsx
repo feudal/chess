@@ -2,80 +2,9 @@ import axios from "axios";
 import { createContext, PropsWithChildren, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-import {
-  BOARD_CELLS as B_CELLS,
-  BOARD_NOTATION as B_NOTATION,
-  COLUMN_NUMBER as COL_NUM,
-  INITIAL_FIGURE_POSITIONS,
-  LS_USER_NAME,
-} from "../app-const";
-import {
-  CellInformation,
-  FigureColor,
-  FigureType,
-  GameContextType,
-  GameStatusEnum,
-  Room,
-  User,
-} from "../types";
-import { checkIfCheck, createNotation, getAvailableMoves, getColumnKey, getError } from "../utils";
-
-const CELLS_INFORMATION: CellInformation[] = Array(64)
-  .fill(null)
-  .map((_, i) => {
-    const [type, color] = INITIAL_FIGURE_POSITIONS?.[B_NOTATION[i]]?.split("-") || [];
-    const figure = type ? { type: type as FigureType, color: color as FigureColor } : undefined;
-
-    const [row, column] = B_NOTATION[i].split("");
-
-    const up = (cells: CellInformation[], step = 1) => {
-      if (+row + step > 8) return undefined;
-      return cells[B_NOTATION.indexOf(`${+row + step}${column}`)];
-    };
-    const down = (cells: CellInformation[], step = 1) => {
-      if (+row - step < 0) return undefined;
-      return cells[B_NOTATION.indexOf(`${+row - step}${column}`)];
-    };
-    const left = (cells: CellInformation[], step = 1) => {
-      if (COL_NUM[column] - step < 0) return undefined;
-      return cells[B_NOTATION.indexOf(`${row}${getColumnKey(column, -step)}`)];
-    };
-    const right = (cells: CellInformation[], step = 1) => {
-      if (COL_NUM[column] + step > 8) return undefined;
-      return cells[B_NOTATION.indexOf(`${row}${getColumnKey(column, step)}`)];
-    };
-    const upLeft = (cells: CellInformation[], step = 1) => {
-      if (+row + step > 8 || COL_NUM[column] - step < 0) return undefined;
-      return cells[B_NOTATION.indexOf(`${+row + step}${getColumnKey(column, -step)}`)];
-    };
-    const upRight = (cells: CellInformation[], step = 1) => {
-      if (+row + step > 8 || COL_NUM[column] + step > 8) return undefined;
-      return cells[B_NOTATION.indexOf(`${+row + step}${getColumnKey(column, step)}`)];
-    };
-    const downLeft = (cells: CellInformation[], step = 1) => {
-      if (+row - step < 0 || COL_NUM[column] - step < 0) return undefined;
-      return cells[B_NOTATION.indexOf(`${+row - step}${getColumnKey(column, -step)}`)];
-    };
-    const downRight = (cells: CellInformation[], step = 1) => {
-      if (+row - step < 0 || COL_NUM[column] + step > 8) return undefined;
-      return cells[B_NOTATION.indexOf(`${+row - step}${getColumnKey(column, step)}`)];
-    };
-
-    return {
-      color: B_CELLS[i % 8][Math.floor(i / 8)],
-      notation: B_NOTATION[i],
-      state: color === "white" ? "active" : undefined,
-      figure,
-      up,
-      down,
-      left,
-      right,
-      upLeft,
-      upRight,
-      downLeft,
-      downRight,
-    };
-  });
+import { BOARD_NOTATION as B_NOTATION, CELLS_INFORMATION, LS_USER_NAME } from "../app-const";
+import { CellInformation, GameContextType, GameStatusEnum, Room, User } from "../types";
+import { checkIfCheck, createNotation, getAvailableMoves, getError } from "../utils";
 
 const gameInitialState = {
   gameStatus: GameStatusEnum.NOT_STARTED,
@@ -104,6 +33,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const [notations, setNotations] = useState<string[]>([]);
 
   useEffect(() => {
+    // * Get user
     const handleChangeStorage = () => {
       const userName = localStorage.getItem(LS_USER_NAME);
       if (userName) {
