@@ -1,3 +1,4 @@
+import { nanoid } from "nanoid";
 import { NextApiRequest, NextApiResponse } from "next";
 
 import { User } from "../../../models";
@@ -9,11 +10,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     // find the user with the query name
     const user = await User.findOne({ name: req.query.name });
     if (!user) {
+      // if user not found, return new  user object
+      const name = "user-" + nanoid(5);
+      const user = await User.create({ name });
       await db.disconnect();
-      return res.status(400).json({ message: "User not found" });
+      res.status(201).json(user);
     }
-    await db.disconnect();
-    res.status(200).json(user);
   } else {
     res.status(400).json({ message: "Bad request" });
   }
