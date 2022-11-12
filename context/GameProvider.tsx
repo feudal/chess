@@ -1,5 +1,6 @@
 import axios from "axios";
 import { createContext, PropsWithChildren, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 import {
   BOARD_CELLS as B_CELLS,
@@ -17,7 +18,7 @@ import {
   Room,
   User,
 } from "../types";
-import { checkIfCheck, createNotation, getAvailableMoves, getColumnKey } from "../utils";
+import { checkIfCheck, createNotation, getAvailableMoves, getColumnKey, getError } from "../utils";
 
 const CELLS_INFORMATION: CellInformation[] = Array(64)
   .fill(null)
@@ -106,7 +107,9 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     const handleChangeStorage = () => {
       const userName = localStorage.getItem(LS_USER_NAME);
       if (userName) {
-        axios(`/api/user/${userName}`).then((res) => setUser(res.data));
+        axios(`/api/user/${userName}`)
+          .then((res) => setUser(res.data))
+          .catch((err) => toast.error(getError(err)));
       }
     };
     handleChangeStorage();
