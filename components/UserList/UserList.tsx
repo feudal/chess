@@ -24,25 +24,19 @@ const getUsersAndSetThem = async (setUsers: Dispatch<React.SetStateAction<User[]
 export const UserList = () => {
   const { room, setRoom, user: mainUser } = useContext(GameContext);
   const [users, setUsers] = useState<User[]>([]);
-  const [needUpdate, setNeedUpdate] = useState(false);
 
   const socketInitializer = async () => {
     await axios("/api/socket");
     socket = io();
 
     socket.on("connect", () => console.log("user-list connected"));
-    socket.on(SO_EVENTS.USER_CHANGED, () => setNeedUpdate(true));
+    socket.on(SO_EVENTS.USER_CHANGED, () => getUsersAndSetThem(setUsers));
   };
 
   useEffect(() => {
     getUsersAndSetThem(setUsers);
     socketInitializer();
   }, []);
-
-  useEffect(() => {
-    getUsersAndSetThem(setUsers);
-    setNeedUpdate(false);
-  }, [needUpdate]);
 
   const handleRoomChange = async (user: User) => {
     const { data } = await axios<Room>(`/api/room/${mainUser?._id}-${user._id}`);
