@@ -23,7 +23,6 @@ export const UserInfo = () => {
   const socketInitializer = async () => {
     await axios("/api/socket");
     socket = io();
-
     socket.on("connect", () => console.log("user-info connected"));
   };
 

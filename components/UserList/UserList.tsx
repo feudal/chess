@@ -28,7 +28,6 @@ export const UserList = () => {
   const socketInitializer = async () => {
     await axios("/api/socket");
     socket = io();
-
     socket.on("connect", () => console.log("user-list connected"));
     socket.on(SO_EVENTS.USER_CHANGED, () => getUsersAndSetThem(setUsers));
   };

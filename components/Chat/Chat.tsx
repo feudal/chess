@@ -23,7 +23,6 @@ export const Chat = () => {
   const socketInitializer = async () => {
     await axios("/api/socket");
     socket = io();
-
     socket.on("connect", () => console.log("chat connected"));
     socket.on(SO_EVENTS.MESSAGE_SENT, () => setNeedUpdate(true));
   };
@@ -45,22 +44,14 @@ export const Chat = () => {
     setNeedUpdate(false);
   }, [needUpdate]);
 
-  useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [room]);
+  useEffect(() => bottomRef.current?.scrollIntoView({ behavior: "smooth" }), [room]);
 
   const handleMessageSend = async () => {
     if (!text || !room || !user) return;
 
     await axios
-      .post(`/api/message`, {
-        room: room?._id,
-        user,
-        text,
-      })
-      .then(() => {
-        socket.emit(SO_EVENTS.MESSAGE_SENT, room?._id);
-      })
+      .post(`/api/message`, { room: room?._id, user, text })
+      .then(() => socket.emit(SO_EVENTS.MESSAGE_SENT, room?._id))
       .catch((err) => toast.error(err));
 
     setText("");

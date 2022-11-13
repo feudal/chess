@@ -12,9 +12,7 @@ export const BoardInfo = () => {
   const { gameStatus, whiteTurn, notations } = useContext(GameContext);
   const bottomRef = useRef<HTMLSpanElement>(null);
 
-  useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [notations]);
+  useEffect(() => bottomRef.current?.scrollIntoView({ behavior: "smooth" }), [notations]);
 
   return (
     <div className={bem()}>

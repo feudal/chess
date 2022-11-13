@@ -13,7 +13,7 @@ const SocketHandler = (req: NextApiRequest, res: any) => {
     res.socket.server.io = io;
 
     io.on("connection", (socket) => {
-      console.log("server connected");
+      console.log("socket with id - " + socket.id + " connected");
       socket.on(SO_EVENTS.USER_CHANGED, () => {
         socket.broadcast.emit(SO_EVENTS.USER_CHANGED);
       });
