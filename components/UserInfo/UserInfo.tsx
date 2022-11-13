@@ -1,10 +1,11 @@
 import { DefaultEventsMap } from "@socket.io/component-emitter";
 import axios from "axios";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import io, { Socket } from "Socket.IO-client";
 
-import { LS_USER_NAME, SO_EVENTS } from "../../app-const";
+import { LS_USER, SO_EVENTS } from "../../app-const";
+import { GameContext } from "../../context";
 import { Edit, User } from "../../svg";
 import { getError, makeBEM } from "../../utils";
 
@@ -12,9 +13,12 @@ const bem = makeBEM("user-info");
 let socket: Socket<DefaultEventsMap, DefaultEventsMap>;
 
 export const UserInfo = () => {
+  const { user } = useContext(GameContext);
   const ref = useRef<HTMLInputElement>(null);
-  const [name, setName] = useState("");
+  const [name, setName] = useState(user?.name || "");
   const [isEdit, setIsEdit] = useState(false);
+
+  useEffect(() => setName(user?.name || ""), [user]);
 
   const socketInitializer = async () => {
     await axios("/api/socket");
@@ -24,29 +28,15 @@ export const UserInfo = () => {
   };
 
   useEffect(() => {
-    const name = localStorage.getItem(LS_USER_NAME);
-
-    if (!name) {
-      axios("/api/user")
-        .then((res) => res.data)
-        .then((data) => {
-          setName(data.name);
-          localStorage.setItem(LS_USER_NAME, data.name);
-        })
-        .catch((err) => toast.error(err));
-    } else {
-      setName(name);
-    }
-
     socketInitializer();
   }, []);
 
   const handleKeyDown = (event: { key: string }) => {
     if (event.key === "Enter") {
       axios
-        .post("/api/user", { name: localStorage.getItem(LS_USER_NAME), newName: name })
-        .then(() => {
-          localStorage.setItem(LS_USER_NAME, name);
+        .post("/api/user", { name: user?.name, newName: name })
+        .then((res) => {
+          localStorage.setItem(LS_USER, JSON.stringify(res.data));
           setIsEdit(false);
           toast.success("Name updated", { toastId: "name-updated" });
 

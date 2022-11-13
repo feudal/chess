@@ -113,7 +113,7 @@ const CELLS_INFORMATION: CellInformation[] = Array(64)
     };
   });
 
-const LS_USER_NAME = "USER";
+const LS_USER = "USER";
 
 const SO_EVENTS = {
   USER_CHANGED: "user-changed",
@@ -125,7 +125,7 @@ export {
   BOARD_NOTATION,
   INITIAL_FIGURE_POSITIONS,
   COLUMN_NUMBER,
-  LS_USER_NAME,
+  LS_USER,
   SO_EVENTS,
   CELLS_INFORMATION,
 };

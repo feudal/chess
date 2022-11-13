@@ -7,10 +7,13 @@ import { db } from "../../../utils";
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "GET") {
     await db.connect();
-    // find the user with the query name
+    // * find the user with the query name
     const user = await User.findOne({ name: req.query.name });
+    await db.disconnect();
+    res.status(200).json(user);
+
     if (!user) {
-      // if user not found, return new  user object
+      // * if user not found, return new  user object
       const name = "user-" + nanoid(5);
       const user = await User.create({ name });
       await db.disconnect();

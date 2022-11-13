@@ -1,8 +1,9 @@
 import axios from "axios";
 import { createContext, PropsWithChildren, useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { io } from "Socket.IO-client";
 
-import { BOARD_NOTATION as B_NOTATION, CELLS_INFORMATION, LS_USER_NAME } from "../app-const";
+import { BOARD_NOTATION as B_NOTATION, CELLS_INFORMATION, LS_USER, SO_EVENTS } from "../app-const";
 import { CellInformation, GameContextType, GameStatusEnum, Room, User } from "../types";
 import { checkIfCheck, createNotation, getAvailableMoves, getError } from "../utils";
 
@@ -20,6 +21,8 @@ const gameInitialState = {
   setNotations: () => undefined,
 };
 
+let socket;
+
 export const GameContext = createContext<GameContextType>(gameInitialState);
 
 export const GameProvider = ({ children }: PropsWithChildren) => {
@@ -32,13 +35,35 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const [user, setUser] = useState<User>();
   const [notations, setNotations] = useState<string[]>([]);
 
+  const socketInitializer = async () => {
+    await axios("/api/socket");
+    socket = io();
+    socket.on("connect", () => console.log("game provider connected"));
+  };
+
   useEffect(() => {
-    // * Get user
+    socketInitializer();
+  }, []);
+
+  useEffect(() => {
     const handleChangeStorage = () => {
-      const userName = localStorage.getItem(LS_USER_NAME);
-      if (userName) {
-        axios(`/api/user/${userName}`)
-          .then((res) => setUser(res.data))
+      const user = JSON.parse(localStorage.getItem(LS_USER) || "null");
+      const setUserAndEmitEvent = (user: User) => {
+        setUser(user);
+        localStorage.setItem(LS_USER, JSON.stringify(user));
+        socket = io();
+        socket.emit(SO_EVENTS.USER_CHANGED);
+      };
+
+      if (user) {
+        // * if user is in local storage, check if user is in database
+        axios(`/api/user/${user.name}`)
+          .then((res) => setUserAndEmitEvent(res.data))
+          .catch((err) => toast.error(getError(err)));
+      } else {
+        // * if user is not in local storage, create new user
+        axios("/api/user")
+          .then((res) => setUserAndEmitEvent(res.data))
           .catch((err) => toast.error(getError(err)));
       }
     };
