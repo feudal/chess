@@ -18,8 +18,14 @@ const SocketHandler = (req: NextApiRequest, res: any) => {
         socket.broadcast.emit(SO_EVENTS.USER_CHANGED);
       });
 
-      socket.on(SO_EVENTS.MESSAGE_SENT, (message) => {
-        socket.broadcast.emit(SO_EVENTS.MESSAGE_SENT, message);
+      socket.on(SO_EVENTS.MESSAGE_SENT, (room_id) => {
+        console.log("message sent in room - " + room_id);
+        io.in(room_id).emit(SO_EVENTS.MESSAGE_RECEIVED);
+      });
+
+      socket.on(SO_EVENTS.JOIN_ROOM, (room_id) => {
+        console.log("joining room - " + room_id);
+        socket.join(room_id);
       });
     });
   }

@@ -14,35 +14,31 @@ import { Title } from "../Title";
 const bem = makeBEM("chat");
 let socket: Socket<DefaultEventsMap, DefaultEventsMap>;
 
+const getAndSetRoom = async (setRoom: (room: Room) => void, room?: Room) => {
+  if (room?.name) {
+    axios<Room>(`/api/room/${room?.name}`)
+      .then((res) => setRoom(res.data))
+      .catch((err) => toast.error(getError(err)));
+  }
+};
+
 export const Chat = () => {
   const bottomRef = useRef<HTMLLIElement>(null);
   const { room, setRoom, user } = useContext(GameContext);
   const [text, setText] = useState("");
-  const [needUpdate, setNeedUpdate] = useState(false);
 
   const socketInitializer = async () => {
     await axios("/api/socket");
     socket = io();
     socket.on("connect", () => console.log("chat connected"));
-    socket.on(SO_EVENTS.MESSAGE_SENT, () => setNeedUpdate(true));
+    socket.emit(SO_EVENTS.JOIN_ROOM, room?._id);
+    socket.on(SO_EVENTS.MESSAGE_SENT, () => getAndSetRoom(setRoom, room));
+    socket.on(SO_EVENTS.MESSAGE_RECEIVED, () => getAndSetRoom(setRoom, room));
   };
 
   useEffect(() => {
     socketInitializer();
-  }, []);
-
-  useEffect(() => {
-    const getRoom = async () => {
-      if (room?.name) {
-        axios<Room>(`/api/room/${room?.name}`)
-          .then((res) => setRoom(res.data))
-          .catch((err) => toast.error(getError(err)));
-      }
-    };
-    getRoom();
-
-    setNeedUpdate(false);
-  }, [needUpdate]);
+  }, [room?._id]);
 
   useEffect(() => bottomRef.current?.scrollIntoView({ behavior: "smooth" }), [room]);
 

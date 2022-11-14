@@ -118,6 +118,8 @@ const LS_USER = "USER";
 const SO_EVENTS = {
   USER_CHANGED: "user-changed",
   MESSAGE_SENT: "message-sent",
+  MESSAGE_RECEIVED: "message-received",
+  JOIN_ROOM: "join-room",
 };
 
 export {
