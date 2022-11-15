@@ -1,8 +1,6 @@
-import { DefaultEventsMap } from "@socket.io/component-emitter";
 import axios from "axios";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
-import { io, Socket } from "Socket.IO-client";
 
 import { SO_EVENTS } from "../../app-const";
 import { GameContext } from "../../context";
@@ -12,7 +10,6 @@ import { getError, makeBEM } from "../../utils";
 import { Title } from "../Title";
 
 const bem = makeBEM("chat");
-let socket: Socket<DefaultEventsMap, DefaultEventsMap>;
 
 const getAndSetRoom = async (setRoom: (room: Room) => void, room?: Room) => {
   if (room?.name) {
@@ -24,21 +21,21 @@ const getAndSetRoom = async (setRoom: (room: Room) => void, room?: Room) => {
 
 export const Chat = () => {
   const bottomRef = useRef<HTMLLIElement>(null);
-  const { room, setRoom, user } = useContext(GameContext);
+  const { socket, room, setRoom, user } = useContext(GameContext);
   const [text, setText] = useState("");
-
-  const socketInitializer = async () => {
-    await axios("/api/socket");
-    socket = io();
-    socket.on("connect", () => console.log("chat connected"));
-    socket.emit(SO_EVENTS.JOIN_ROOM, room?._id);
-    socket.on(SO_EVENTS.MESSAGE_SENT, () => getAndSetRoom(setRoom, room));
-    socket.on(SO_EVENTS.MESSAGE_RECEIVED, () => getAndSetRoom(setRoom, room));
-  };
+  const [needToUpdate, setNeedToUpdate] = useState(false);
 
   useEffect(() => {
-    socketInitializer();
+    socket?.on(SO_EVENTS.MESSAGE_SENT, () => setNeedToUpdate(true));
+    socket?.on(SO_EVENTS.MESSAGE_RECEIVED, () => setNeedToUpdate(true));
   }, [room?._id]);
+
+  useEffect(() => {
+    if (needToUpdate) {
+      getAndSetRoom(setRoom, room);
+      setNeedToUpdate(false);
+    }
+  }, [needToUpdate]);
 
   useEffect(() => bottomRef.current?.scrollIntoView({ behavior: "smooth" }), [room]);
 
@@ -47,7 +44,7 @@ export const Chat = () => {
 
     await axios
       .post(`/api/message`, { room: room?._id, user, text })
-      .then(() => socket.emit(SO_EVENTS.MESSAGE_SENT, room?._id))
+      .then(() => socket?.emit(SO_EVENTS.MESSAGE_SENT, room?._id))
       .catch((err) => toast.error(err));
 
     setText("");

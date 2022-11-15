@@ -1,7 +1,8 @@
 import axios from "axios";
 import { createContext, PropsWithChildren, useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { io } from "Socket.IO-client";
+import { io, Socket } from "Socket.IO-client";
+import { DefaultEventsMap } from "socket.io/dist/typed-events";
 
 import { BOARD_NOTATION as B_NOTATION, CELLS_INFORMATION, LS_USER, SO_EVENTS } from "../app-const";
 import { CellInformation, GameContextType, GameStatusEnum, Room, User } from "../types";
@@ -19,11 +20,12 @@ const gameInitialState = {
   setRoom: () => undefined,
   notations: [],
   setNotations: () => undefined,
+  socket: undefined,
 };
 
-let socket;
-
 export const GameContext = createContext<GameContextType>(gameInitialState);
+
+let socket: Socket<DefaultEventsMap, DefaultEventsMap>;
 
 export const GameProvider = ({ children }: PropsWithChildren) => {
   const [gameStatus, setGameStatus] = useState(GameStatusEnum.NOT_STARTED);
@@ -51,7 +53,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       const setUserAndEmitEvent = (user: User) => {
         setUser(user);
         localStorage.setItem(LS_USER, JSON.stringify(user));
-        socket = io();
         socket.emit(SO_EVENTS.USER_CHANGED);
       };
 
@@ -152,6 +153,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         user,
         notations,
         setNotations,
+        socket,
       }}
     >
       {children}

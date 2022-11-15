@@ -1,7 +1,6 @@
 import axios from "axios";
 import React, { Dispatch, useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import io from "Socket.IO-client";
 
 import { Title } from "..";
 import { SO_EVENTS } from "../../app-const";
@@ -12,8 +11,6 @@ import { makeBEM } from "../../utils";
 
 const bem = makeBEM("user-list");
 
-let socket;
-
 const getUsersAndSetThem = async (setUsers: Dispatch<React.SetStateAction<User[]>>) => {
   fetch("/api/users")
     .then((res) => res.json())
@@ -22,23 +19,17 @@ const getUsersAndSetThem = async (setUsers: Dispatch<React.SetStateAction<User[]
 };
 
 export const UserList = () => {
-  const { room, setRoom, user: mainUser } = useContext(GameContext);
+  const { socket, room, setRoom, user: mainUser } = useContext(GameContext);
   const [users, setUsers] = useState<User[]>([]);
-
-  const socketInitializer = async () => {
-    await axios("/api/socket");
-    socket = io();
-    socket.on("connect", () => console.log("user-list connected"));
-    socket.on(SO_EVENTS.USER_CHANGED, () => getUsersAndSetThem(setUsers));
-  };
 
   useEffect(() => {
     getUsersAndSetThem(setUsers);
-    socketInitializer();
+    socket?.on(SO_EVENTS.USER_CHANGED, () => getUsersAndSetThem(setUsers));
   }, []);
 
   const handleRoomChange = async (user: User) => {
     const { data } = await axios<Room>(`/api/room/${mainUser?._id}-${user._id}`);
+    socket?.emit(SO_EVENTS.JOIN_ROOM, data?._id);
     setRoom(data);
   };
 

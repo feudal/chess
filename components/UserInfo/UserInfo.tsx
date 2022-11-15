@@ -1,8 +1,6 @@
-import { DefaultEventsMap } from "@socket.io/component-emitter";
 import axios from "axios";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
-import io, { Socket } from "Socket.IO-client";
 
 import { LS_USER, SO_EVENTS } from "../../app-const";
 import { GameContext } from "../../context";
@@ -10,25 +8,14 @@ import { Edit, User } from "../../svg";
 import { getError, makeBEM } from "../../utils";
 
 const bem = makeBEM("user-info");
-let socket: Socket<DefaultEventsMap, DefaultEventsMap>;
 
 export const UserInfo = () => {
-  const { user } = useContext(GameContext);
+  const { socket, user } = useContext(GameContext);
   const ref = useRef<HTMLInputElement>(null);
   const [name, setName] = useState(user?.name || "");
   const [isEdit, setIsEdit] = useState(false);
 
   useEffect(() => setName(user?.name || ""), [user]);
-
-  const socketInitializer = async () => {
-    await axios("/api/socket");
-    socket = io();
-    socket.on("connect", () => console.log("user-info connected"));
-  };
-
-  useEffect(() => {
-    socketInitializer();
-  }, []);
 
   const handleKeyDown = (event: { key: string }) => {
     if (event.key === "Enter") {
@@ -39,7 +26,7 @@ export const UserInfo = () => {
           setIsEdit(false);
           toast.success("Name updated", { toastId: "name-updated" });
 
-          socket.emit(SO_EVENTS.USER_CHANGED);
+          socket?.emit(SO_EVENTS.USER_CHANGED);
           window.dispatchEvent(new Event("storage"));
         })
         .catch((err) => toast.error(getError(err)));

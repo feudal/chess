@@ -1,3 +1,5 @@
+import { Socket } from "Socket.IO-client";
+import { DefaultEventsMap } from "socket.io/dist/typed-events";
 import { Room, User } from ".";
 
 export enum GameStatusEnum {
@@ -21,6 +23,7 @@ export type GameContextType = {
   user?: User;
   notations: string[];
   setNotations: (notation: string[]) => void;
+  socket?: Socket<DefaultEventsMap, DefaultEventsMap>;
 };
 
 export enum FIGURE_TYPE {
