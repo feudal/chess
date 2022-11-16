@@ -7,6 +7,11 @@
   margin-right: 5px;
   overflow-y: auto;
 
+  &__container {
+    display: flex;
+    flex-direction: column;
+  }
+
   &__item {
     cursor: pointer;
     display: flex;
@@ -15,13 +20,10 @@
     border-bottom: 1px solid var(--white-cell);
     transition: all 0.3s ease-in-out;
 
-    &:last-child {
-      border-bottom: none;
-    }
-
     &--online {
       font-weight: bold;
       color: var(--online-color);
+      order: -1;
     }
 
     &:hover {

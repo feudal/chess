@@ -38,7 +38,7 @@ export const UserList = () => {
   return (
     <div className={bem()}>
       <Title icon={<Users />}>User list</Title>
-      <ul>
+      <ul className={bem("container")}>
         {users
           .filter((user) => user._id !== mainUser?._id)
           .map((user) => (
