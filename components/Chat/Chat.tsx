@@ -28,7 +28,7 @@ export const Chat = () => {
   useEffect(() => {
     socket?.on(SO_EVENTS.MESSAGE_SENT, () => setNeedToUpdate(true));
     socket?.on(SO_EVENTS.MESSAGE_RECEIVED, () => setNeedToUpdate(true));
-  }, [room?._id]);
+  }, [room?._id, socket]);
 
   useEffect(() => {
     if (needToUpdate) {

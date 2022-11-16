@@ -19,11 +19,16 @@
       border-bottom: none;
     }
 
+    &--online {
+      font-weight: bold;
+      color: var(--online-color);
+    }
+
     &:hover {
-      background-color: var(--white-cell);
+      background-color: var(--offline-color);
     }
     &--active {
-      background-color: var(--white-cell);
+      background-color: var(--offline-color);
     }
   }
 }

@@ -21,11 +21,13 @@ const getUsersAndSetThem = async (setUsers: Dispatch<React.SetStateAction<User[]
 export const UserList = () => {
   const { socket, room, setRoom, user: mainUser } = useContext(GameContext);
   const [users, setUsers] = useState<User[]>([]);
+  const [usersOnline, setUsersOnline] = useState<string[]>([]);
 
   useEffect(() => {
     getUsersAndSetThem(setUsers);
+    socket?.on(SO_EVENTS.USERS_ONLINE, (usersId: string[]) => setUsersOnline(usersId));
     socket?.on(SO_EVENTS.USER_CHANGED, () => getUsersAndSetThem(setUsers));
-  }, []);
+  }, [socket]);
 
   const handleRoomChange = async (user: User) => {
     const { data } = await axios<Room>(`/api/room/${mainUser?._id}-${user._id}`);
@@ -42,7 +44,10 @@ export const UserList = () => {
           .map((user) => (
             <li
               key={user?._id}
-              className={bem("item", { active: room?.name.includes(user._id) })}
+              className={bem("item", {
+                active: room?.name.includes(user._id),
+                online: usersOnline?.includes(user._id),
+              })}
               onClick={() => handleRoomChange(user)}
             >
               {user?.name}

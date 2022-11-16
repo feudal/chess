@@ -1,4 +1,4 @@
-import { useContext, useMemo } from "react";
+import { useContext } from "react";
 import { GameContext } from "../../context";
 
 import { Cell } from "../Cell";

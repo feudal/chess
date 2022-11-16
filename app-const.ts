@@ -116,6 +116,8 @@ const CELLS_INFORMATION: CellInformation[] = Array(64)
 const LS_USER = "USER";
 
 const SO_EVENTS = {
+  LOGIN: "login",
+  USERS_ONLINE: "users-online",
   USER_CHANGED: "user-changed",
   MESSAGE_SENT: "message-sent",
   MESSAGE_RECEIVED: "message-received",

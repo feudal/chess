@@ -40,12 +40,12 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const socketInitializer = async () => {
     await axios("/api/socket");
     socket = io();
-    socket.on("connect", () => console.log("game provider connected"));
+    user?._id && socket.emit(SO_EVENTS.LOGIN, user?._id);
   };
 
   useEffect(() => {
     socketInitializer();
-  }, []);
+  }, [user?._id]);
 
   useEffect(() => {
     const handleChangeStorage = () => {

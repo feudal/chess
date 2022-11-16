@@ -3,6 +3,8 @@ import { Server } from "Socket.IO";
 
 import { SO_EVENTS } from "../../app-const";
 
+const socketAndUserIds: { [name: string]: string } = {};
+
 const SocketHandler = (req: NextApiRequest, res: any) => {
   if (res.socket.server.io) {
     console.log("Socket is already running");
@@ -26,6 +28,19 @@ const SocketHandler = (req: NextApiRequest, res: any) => {
       socket.on(SO_EVENTS.JOIN_ROOM, (room_id) => {
         console.log("joining room - " + room_id);
         socket.join(room_id);
+      });
+
+      socket.on(SO_EVENTS.LOGIN, (userId?: string) => {
+        console.log("user logged in - " + userId);
+        if (userId) {
+          socketAndUserIds[socket.id] = userId;
+          io.emit(SO_EVENTS.USERS_ONLINE, Object.values(socketAndUserIds));
+        }
+      });
+      socket.on("disconnect", () => {
+        console.log("socket with id - " + socket.id + " disconnected");
+        delete socketAndUserIds[socket.id];
+        socket.broadcast.emit(SO_EVENTS.USERS_ONLINE, Object.values(socketAndUserIds));
       });
     });
   }
