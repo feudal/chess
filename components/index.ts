@@ -8,3 +8,4 @@ export * from "./UserInfo";
 export * from "./UserList";
 export * from "./Title";
 export * from "./Timer";
+export * from "./Modal";
