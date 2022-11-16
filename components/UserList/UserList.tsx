@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { Dispatch, useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-import { Title } from "..";
+import { Button, Modal, Title } from "..";
 import { SO_EVENTS } from "../../app-const";
 import { GameContext } from "../../context";
 import { Users } from "../../svg";
@@ -22,11 +22,17 @@ export const UserList = () => {
   const { socket, room, setRoom, user: mainUser } = useContext(GameContext);
   const [users, setUsers] = useState<User[]>([]);
   const [usersOnline, setUsersOnline] = useState<string[]>([]);
+  const [inviteModalIsOpen, setInviteModalIsOpen] = useState(false);
+  const [inviteeName, setInviteeName] = useState<string>("");
 
   useEffect(() => {
     getUsersAndSetThem(setUsers);
     socket?.on(SO_EVENTS.USERS_ONLINE, (usersId: string[]) => setUsersOnline(usersId));
     socket?.on(SO_EVENTS.USER_CHANGED, () => getUsersAndSetThem(setUsers));
+    socket?.on(SO_EVENTS.INVITE_RECEIVED, (userName: string) => {
+      setInviteModalIsOpen(true);
+      setInviteeName(userName);
+    });
   }, [socket]);
 
   const handleRoomChange = async (user: User) => {
@@ -35,25 +41,50 @@ export const UserList = () => {
     setRoom(data);
   };
 
+  const handelInvite = (fromUser?: User, toUser?: User) => {
+    socket?.emit(SO_EVENTS.INVITE_SENT, fromUser?.name, toUser?._id);
+  };
+
   return (
-    <div className={bem()}>
-      <Title icon={<Users />}>User list</Title>
-      <ul className={bem("container")}>
-        {users
-          .filter((user) => user._id !== mainUser?._id)
-          .map((user) => (
-            <li
-              key={user?._id}
-              className={bem("item", {
-                active: room?.name.includes(user._id),
-                online: usersOnline?.includes(user._id),
-              })}
-              onClick={() => handleRoomChange(user)}
-            >
-              {user?.name}
-            </li>
-          ))}
-      </ul>
-    </div>
+    <>
+      <div className={bem()}>
+        <Title icon={<Users />}>User list</Title>
+        <ul className={bem("container")}>
+          {users
+            .filter((user) => user._id !== mainUser?._id)
+            .map((user) => {
+              const isOnline = usersOnline.includes(user._id);
+              return (
+                <li
+                  key={user?._id}
+                  className={bem("item", {
+                    active: room?.name.includes(user._id),
+                    online: isOnline,
+                  })}
+                >
+                  <span onClick={() => handleRoomChange(user)}>{user?.name}</span>
+                  {isOnline && (
+                    <Button
+                      shape="pill"
+                      color="secondary"
+                      onClick={() => handelInvite(mainUser, user)}
+                    >
+                      Invite
+                    </Button>
+                  )}
+                </li>
+              );
+            })}
+        </ul>
+      </div>
+
+      <Modal
+        open={inviteModalIsOpen}
+        onClose={() => setInviteModalIsOpen(false)}
+        title="Invitation"
+      >
+        {inviteeName} invite you to play
+      </Modal>
+    </>
   );
 };

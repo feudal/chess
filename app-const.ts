@@ -122,6 +122,8 @@ const SO_EVENTS = {
   MESSAGE_SENT: "message-sent",
   MESSAGE_RECEIVED: "message-received",
   JOIN_ROOM: "join-room",
+  INVITE_SENT: "invite-sent",
+  INVITE_RECEIVED: "invite-received",
 };
 
 export {

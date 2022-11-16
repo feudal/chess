@@ -37,9 +37,14 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const [user, setUser] = useState<User>();
   const [notations, setNotations] = useState<string[]>([]);
 
+  // * I don't know why but this code is working
+  const [socketId, setSocketId] = useState<string>();
+  useEffect(() => setSocketId(socket?.id), [socket]);
+
   const socketInitializer = async () => {
     await axios("/api/socket");
     socket = io();
+    setSocketId(socket.id);
     user?._id && socket.emit(SO_EVENTS.LOGIN, user?._id);
   };
 

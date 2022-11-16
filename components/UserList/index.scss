@@ -13,15 +13,19 @@
   }
 
   &__item {
-    cursor: pointer;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     padding: 2px 5px;
     border-bottom: 1px solid var(--white-cell);
     transition: all 0.3s ease-in-out;
 
+    span {
+      cursor: pointer;
+    }
+
     &--online {
-      font-weight: bold;
+      font-weight: 500;
       color: var(--online-color);
       order: -1;
     }

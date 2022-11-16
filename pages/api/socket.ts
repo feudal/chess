@@ -33,14 +33,27 @@ const SocketHandler = (req: NextApiRequest, res: any) => {
       socket.on(SO_EVENTS.LOGIN, (userId?: string) => {
         console.log("user logged in - " + userId);
         if (userId) {
-          socketAndUserIds[socket.id] = userId;
-          io.emit(SO_EVENTS.USERS_ONLINE, Object.values(socketAndUserIds));
+          socketAndUserIds[userId] = socket.id;
+          io.emit(SO_EVENTS.USERS_ONLINE, Object.keys(socketAndUserIds));
         }
       });
       socket.on("disconnect", () => {
         console.log("socket with id - " + socket.id + " disconnected");
-        delete socketAndUserIds[socket.id];
-        socket.broadcast.emit(SO_EVENTS.USERS_ONLINE, Object.values(socketAndUserIds));
+        const userId = Object.keys(socketAndUserIds).find(
+          (key) => socketAndUserIds[key] === socket.id,
+        );
+        if (userId) {
+          delete socketAndUserIds[userId];
+          io.emit(SO_EVENTS.USERS_ONLINE, Object.keys(socketAndUserIds));
+        }
+      });
+
+      socket.on(SO_EVENTS.INVITE_SENT, (fromUserName, toUserId) => {
+        console.log("invite sent to user - " + toUserId);
+        const socketId = Object.entries(socketAndUserIds)
+          .find(([key, value]) => key === toUserId)
+          ?.pop();
+        if (socketId) io.in(socketId).emit(SO_EVENTS.INVITE_RECEIVED, fromUserName);
       });
     });
   }
