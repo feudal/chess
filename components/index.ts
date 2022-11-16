@@ -1,3 +1,4 @@
+export * from "./Button";
 export * from "./Board";
 export * from "./BoardInfo";
 export * from "./Cell";

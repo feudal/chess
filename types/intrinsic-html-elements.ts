@@ -1,0 +1,12 @@
+export type HTMLDivProps = JSX.IntrinsicElements["div"];
+export type HTMLButtonProps = JSX.IntrinsicElements["button"];
+export type HTMLAnchorProps = JSX.IntrinsicElements["a"];
+export type HTMLParagraphProps = JSX.IntrinsicElements["p"];
+export type HTMLSpanProps = JSX.IntrinsicElements["span"];
+export type HTMLSectionProps = JSX.IntrinsicElements["section"];
+export type HTMLNavProps = JSX.IntrinsicElements["nav"];
+export type HTMLInputProps = JSX.IntrinsicElements["input"];
+export type HTMLLabelProps = JSX.IntrinsicElements["label"];
+export type HTMLTextareaProps = JSX.IntrinsicElements["textarea"];
+export type HTMLArticleProps = JSX.IntrinsicElements["article"];
+export type HTMLHeadingProps = JSX.IntrinsicElements["h1"];

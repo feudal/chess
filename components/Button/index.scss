@@ -1,0 +1,41 @@
+.button {
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 2px 20px;
+  transition: all 0.3s ease-in-out;
+  border: none;
+  font-weight: 500;
+  border: 1px solid #000;
+
+  &--md {
+    padding: 10px 20px;
+  }
+
+  &--pill {
+    border-radius: 50px;
+  }
+
+  &--primary {
+    background-color: var(--black-cell);
+    color: #fff;
+    &:hover {
+      background-color: #fff;
+      color: #000;
+    }
+  }
+
+  &--secondary {
+    border-color: var(--online-color);
+    background-color: var(--online-color);
+    color: #fff;
+
+    &:hover {
+      border-color: #fff;
+      background-color: #fff;
+      color: var(--online-color);
+    }
+  }
+}
