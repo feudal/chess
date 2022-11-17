@@ -4,7 +4,7 @@ const GameSchema = new mongoose.Schema(
   {
     white: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     black: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-    gamePosition: { type: String, required: true },
+    notation: { type: String, required: true },
     winner: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   },
   {

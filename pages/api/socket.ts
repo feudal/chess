@@ -65,7 +65,7 @@ const SocketHandler = (req: NextApiRequest, res: any) => {
         const game = await Game.create({
           white: fromUser,
           black: toUser,
-          gamePosition: "start",
+          notation: "start",
         });
         await game.save();
         await game.populate("white");
