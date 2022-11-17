@@ -6,7 +6,7 @@ import { Button, Modal, Title } from "..";
 import { SO_EVENTS } from "../../app-const";
 import { GameContext } from "../../context";
 import { Users } from "../../svg";
-import { Room, User } from "../../types";
+import { GameStatusEnum, Room, User } from "../../types";
 import { makeBEM } from "../../utils";
 
 const bem = makeBEM("user-list");
@@ -19,7 +19,7 @@ const getUsersAndSetThem = async (setUsers: Dispatch<React.SetStateAction<User[]
 };
 
 export const UserList = () => {
-  const { socket, room, setRoom, user: mainUser } = useContext(GameContext);
+  const { gameStatus, socket, room, setRoom, user: mainUser } = useContext(GameContext);
   const [users, setUsers] = useState<User[]>([]);
   const [usersOnline, setUsersOnline] = useState<string[]>([]);
   const [inviteModalIsOpen, setInviteModalIsOpen] = useState(false);
@@ -68,7 +68,7 @@ export const UserList = () => {
                   })}
                 >
                   <span onClick={() => handleRoomChange(user)}>{user?.name}</span>
-                  {isOnline && (
+                  {isOnline && gameStatus === GameStatusEnum.NOT_STARTED && (
                     <Button
                       shape="pill"
                       color="secondary"
@@ -77,6 +77,7 @@ export const UserList = () => {
                       Invite
                     </Button>
                   )}
+                  {isOnline && gameStatus !== GameStatusEnum.NOT_STARTED && "online"}
                 </li>
               );
             })}
