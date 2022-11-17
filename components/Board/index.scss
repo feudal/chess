@@ -5,4 +5,18 @@
   display: grid;
   grid-template-columns: repeat(8, 1fr);
   border: 1px solid var(--black-color);
+
+  &--inactive {
+    pointer-events: none;
+  }
+
+  &--is-turned {
+    // mirroring the board
+    transform: scaleY(-1);
+    transform: rotate(180deg);
+
+    .cell {
+      transform: rotate(180deg);
+    }
+  }
 }

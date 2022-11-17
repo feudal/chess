@@ -1,14 +1,27 @@
 import { useContext } from "react";
 import { GameContext } from "../../context";
+import { makeBEM } from "../../utils";
 
 import { Cell } from "../Cell";
 import { Figure } from "../Figure";
 
+const bem = makeBEM("board");
+
 export const Board = () => {
-  const { cellsInformation, move } = useContext(GameContext);
+  const { cellsInformation, move, whiteTurn, game, user } = useContext(GameContext);
+  const isUserTurn = whiteTurn
+    ? game?.white?.name === user?.name
+    : game?.black?.name === user?.name;
+
+  const playerColor = game?.white?.name === user?.name ? "white" : "black";
 
   return (
-    <div className="board">
+    <div
+      className={bem(null, {
+        inactive: !isUserTurn,
+        "is-turned": playerColor === "black",
+      })}
+    >
       {Array(64)
         .fill(null)
         .map((_, i) => (

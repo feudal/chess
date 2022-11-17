@@ -4,7 +4,6 @@ import { LOCAL_STORAGE, SO_EVENTS } from "../../app-const";
 import { GameContext } from "../../context";
 import { makeBEM } from "../../utils";
 import { Modal, Title } from "..";
-import { Game, GameStatusEnum } from "../../types";
 import axios from "axios";
 
 const move = (game_id: string, notation: string) =>
@@ -15,9 +14,11 @@ const move = (game_id: string, notation: string) =>
 const bem = makeBEM("players");
 
 export const Players = () => {
-  const { socket, whiteTurn, game, setGame } = useContext(GameContext);
+  const { socket, whiteTurn, game, setGame, user } = useContext(GameContext);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [time, setTime] = useState(5);
+
+  const whoseTurn = whiteTurn ? game?.white?.name ?? "White" : game?.black?.name ?? "Black";
 
   useEffect(() => {
     socket?.on(SO_EVENTS.GAME_STARTED, (game) => {
@@ -44,7 +45,7 @@ export const Players = () => {
     <>
       <div className="players">
         <Title icon={<div className={bem("square", { black: !whiteTurn })}></div>}>{`${
-          whiteTurn ? game?.white?.name ?? "White" : game?.black?.name ?? "Black"
+          whoseTurn === user?.name ? "Your" : whoseTurn
         } turn`}</Title>
       </div>
 
