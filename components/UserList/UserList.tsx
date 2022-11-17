@@ -23,15 +23,15 @@ export const UserList = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [usersOnline, setUsersOnline] = useState<string[]>([]);
   const [inviteModalIsOpen, setInviteModalIsOpen] = useState(false);
-  const [inviteeName, setInviteeName] = useState<string>("");
+  const [inviteeUser, setInviteeUser] = useState<User | null>(null);
 
   useEffect(() => {
     getUsersAndSetThem(setUsers);
     socket?.on(SO_EVENTS.USERS_ONLINE, (usersId: string[]) => setUsersOnline(usersId));
     socket?.on(SO_EVENTS.USER_CHANGED, () => getUsersAndSetThem(setUsers));
-    socket?.on(SO_EVENTS.INVITE_RECEIVED, (userName: string) => {
+    socket?.on(SO_EVENTS.INVITE_RECEIVED, (user: User) => {
       setInviteModalIsOpen(true);
-      setInviteeName(userName);
+      setInviteeUser(user);
     });
   }, [socket]);
 
@@ -42,7 +42,12 @@ export const UserList = () => {
   };
 
   const handelInvite = (fromUser?: User, toUser?: User) => {
-    socket?.emit(SO_EVENTS.INVITE_SENT, fromUser?.name, toUser?._id);
+    socket?.emit(SO_EVENTS.INVITE_SENT, fromUser, toUser);
+  };
+
+  const handleInviteAccept = (fromUser?: User | null, toUser?: User | null) => {
+    setInviteModalIsOpen(false);
+    socket?.emit(SO_EVENTS.INITIATE_GAME, fromUser, toUser);
   };
 
   return (
@@ -79,11 +84,14 @@ export const UserList = () => {
       </div>
 
       <Modal
+        title="Invitation"
         open={inviteModalIsOpen}
         onClose={() => setInviteModalIsOpen(false)}
-        title="Invitation"
+        onAccept={() => handleInviteAccept(mainUser, inviteeUser)}
+        acceptButtonLabel="Accept"
+        rejectButtonLabel="Reject"
       >
-        {inviteeName} invite you to play
+        {inviteeUser?.name} invite you to play
       </Modal>
     </>
   );
