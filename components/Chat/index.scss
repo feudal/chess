@@ -22,13 +22,11 @@
   }
 
   &__item {
-    display: flex;
-    align-items: flex-start;
     padding: 0 5px;
+    font-size: 14px;
   }
 
   &__time {
-    font-size: 12px;
     color: var(--gray);
     margin-top: 4px;
   }

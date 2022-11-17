@@ -1,6 +1,6 @@
 export const Board = (props: JSX.IntrinsicElements["svg"]) => {
   return (
-    <svg width="24" height="24" x="0px" y="0px" viewBox="0 0 298 298" {...props}>
+    <svg width="20" height="20" x="0px" y="0px" viewBox="0 0 298 298" {...props}>
       <g>
         <rect x="217" y="46.5" width="35" height="34" />
         <rect x="149" y="46.5" width="35" height="34" />
