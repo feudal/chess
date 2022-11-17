@@ -10,8 +10,11 @@ export enum GameStatusEnum {
   BLACK_WON = "BLACK_WON",
 }
 
+export type KeyOfGameStatusEnum = keyof typeof GameStatusEnum;
+
 export type GameContextType = {
-  gameStatus: keyof typeof GameStatusEnum;
+  gameStatus: KeyOfGameStatusEnum;
+  setGameStatus: (status: KeyOfGameStatusEnum) => void;
   whiteTurn: boolean;
   isCheck: boolean;
   cellsInformation: CellInformation[];

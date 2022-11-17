@@ -20,3 +20,11 @@ export interface Room {
   name: string;
   messages: Message[];
 }
+
+export interface Game extends TimeInfo {
+  _id: string;
+  white: User;
+  black: User;
+  gamePosition: string;
+  winner: User;
+}

@@ -5,11 +5,19 @@ import { io, Socket } from "Socket.IO-client";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
 
 import { BOARD_NOTATION as B_NOTATION, CELLS_INFORMATION, LS_USER, SO_EVENTS } from "../app-const";
-import { CellInformation, GameContextType, GameStatusEnum, Room, User } from "../types";
+import {
+  CellInformation,
+  GameContextType,
+  GameStatusEnum,
+  KeyOfGameStatusEnum,
+  Room,
+  User,
+} from "../types";
 import { checkIfCheck, createNotation, getAvailableMoves, getError } from "../utils";
 
 const gameInitialState = {
   gameStatus: GameStatusEnum.NOT_STARTED,
+  setGameStatus: (gameStatus: KeyOfGameStatusEnum) => {},
   whiteTurn: true,
   isCheck: false,
   cellsInformation: CELLS_INFORMATION,
@@ -28,7 +36,7 @@ export const GameContext = createContext<GameContextType>(gameInitialState);
 let socket: Socket<DefaultEventsMap, DefaultEventsMap>;
 
 export const GameProvider = ({ children }: PropsWithChildren) => {
-  const [gameStatus, setGameStatus] = useState(GameStatusEnum.NOT_STARTED);
+  const [gameStatus, setGameStatus] = useState<KeyOfGameStatusEnum>(GameStatusEnum.NOT_STARTED);
   const [whiteTurn, setWhiteTurn] = useState(gameInitialState.whiteTurn);
   const [isCheck, setIsCheck] = useState(false);
   const [cellsInformation, setCellsInformation] = useState(gameInitialState.cellsInformation);
@@ -147,6 +155,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     <GameContext.Provider
       value={{
         gameStatus,
+        setGameStatus,
         whiteTurn,
         isCheck,
         cellsInformation,
