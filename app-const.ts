@@ -113,7 +113,10 @@ const CELLS_INFORMATION: CellInformation[] = Array(64)
     };
   });
 
-const LS_USER = "USER";
+const LOCAL_STORAGE = {
+  USER: "USER",
+  GAME: "GAME",
+};
 
 const SO_EVENTS = {
   LOGIN: "login",
@@ -133,7 +136,7 @@ export {
   BOARD_NOTATION,
   INITIAL_FIGURE_POSITIONS,
   COLUMN_NUMBER,
-  LS_USER,
+  LOCAL_STORAGE,
   SO_EVENTS,
   CELLS_INFORMATION,
 };

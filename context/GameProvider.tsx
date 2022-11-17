@@ -4,7 +4,12 @@ import { toast } from "react-toastify";
 import { io, Socket } from "Socket.IO-client";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
 
-import { BOARD_NOTATION as B_NOTATION, CELLS_INFORMATION, LS_USER, SO_EVENTS } from "../app-const";
+import {
+  BOARD_NOTATION as B_NOTATION,
+  CELLS_INFORMATION,
+  LOCAL_STORAGE,
+  SO_EVENTS,
+} from "../app-const";
 import {
   CellInformation,
   GameContextType,
@@ -62,10 +67,10 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   useEffect(() => {
     const handleChangeStorage = () => {
-      const user = JSON.parse(localStorage.getItem(LS_USER) || "null");
+      const user = JSON.parse(localStorage.getItem(LOCAL_STORAGE.USER) || "null");
       const setUserAndEmitEvent = (user: User) => {
         setUser(user);
-        localStorage.setItem(LS_USER, JSON.stringify(user));
+        localStorage.setItem(LOCAL_STORAGE.USER, JSON.stringify(user));
         socket.emit(SO_EVENTS.USER_CHANGED);
       };
 

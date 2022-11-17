@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 
-import { LS_USER, SO_EVENTS } from "../../app-const";
+import { LOCAL_STORAGE, SO_EVENTS } from "../../app-const";
 import { GameContext } from "../../context";
 import { Edit, User } from "../../svg";
 import { getError, makeBEM } from "../../utils";
@@ -22,7 +22,7 @@ export const UserInfo = () => {
       axios
         .post("/api/user", { name: user?.name, newName: name })
         .then((res) => {
-          localStorage.setItem(LS_USER, JSON.stringify(res.data));
+          localStorage.setItem(LOCAL_STORAGE.USER, JSON.stringify(res.data));
           setIsEdit(false);
           toast.success("Name updated", { toastId: "name-updated" });
 
