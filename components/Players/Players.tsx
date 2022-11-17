@@ -1,26 +1,29 @@
 import { useContext, useEffect, useState } from "react";
 
-import { SO_EVENTS } from "../../app-const";
+import { LOCAL_STORAGE, SO_EVENTS } from "../../app-const";
 import { GameContext } from "../../context";
 import { makeBEM } from "../../utils";
 import { Modal, Title } from "..";
 import { Game, GameStatusEnum } from "../../types";
+import axios from "axios";
+
+const move = (game_id: string, notation: string) =>
+  axios.post(`api/game/${game_id}`, { notation }).then((res) => {
+    console.log(res.data);
+  });
 
 const bem = makeBEM("players");
 
 export const Players = () => {
-  const { socket, whiteTurn, setGameStatus } = useContext(GameContext);
+  const { socket, whiteTurn, game, setGame } = useContext(GameContext);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [time, setTime] = useState(5);
-  const [game, setGame] = useState<Game>();
 
   useEffect(() => {
     socket?.on(SO_EVENTS.GAME_STARTED, (game) => {
       setModalIsOpen(true);
       setGame(game);
-      setGameStatus(GameStatusEnum.PLAYING);
-
-      console.log({ game });
+      localStorage.setItem(LOCAL_STORAGE.GAME, JSON.stringify(game));
     });
   }, [socket]);
 
@@ -33,11 +36,15 @@ export const Players = () => {
     }
   }, [time]);
 
+  useEffect(() => {
+    setGame(JSON.parse(localStorage.getItem(LOCAL_STORAGE.GAME) || "null"));
+  }, []);
+
   return (
     <>
       <div className="players">
         <Title icon={<div className={bem("square", { black: !whiteTurn })}></div>}>{`${
-          whiteTurn ? game?.white.name ?? "White" : game?.black.name ?? "Black"
+          whiteTurn ? game?.white?.name ?? "White" : game?.black?.name ?? "Black"
         } turn`}</Title>
       </div>
 

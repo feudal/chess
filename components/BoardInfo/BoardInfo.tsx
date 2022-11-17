@@ -10,7 +10,7 @@ import { Title } from "../Title";
 const bem = makeBEM("board-info");
 
 export const BoardInfo = () => {
-  const { gameStatus, whiteTurn, notations } = useContext(GameContext);
+  const { notations } = useContext(GameContext);
   const bottomRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => bottomRef.current?.scrollIntoView({ behavior: "smooth" }), [notations]);
@@ -20,7 +20,7 @@ export const BoardInfo = () => {
       <Title icon={<Board />}>Board info</Title>
       <div className={bem("block")}>
         <Title icon={<Clock />}>
-          <Timer status={gameStatus} />
+          <Timer />
         </Title>
 
         <Players />

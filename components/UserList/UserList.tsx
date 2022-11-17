@@ -19,7 +19,7 @@ const getUsersAndSetThem = async (setUsers: Dispatch<React.SetStateAction<User[]
 };
 
 export const UserList = () => {
-  const { gameStatus, socket, room, setRoom, user: mainUser } = useContext(GameContext);
+  const { game, socket, room, setRoom, user: mainUser } = useContext(GameContext);
   const [users, setUsers] = useState<User[]>([]);
   const [usersOnline, setUsersOnline] = useState<string[]>([]);
   const [inviteModalIsOpen, setInviteModalIsOpen] = useState(false);
@@ -68,7 +68,7 @@ export const UserList = () => {
                   })}
                 >
                   <span onClick={() => handleRoomChange(user)}>{user?.name}</span>
-                  {isOnline && gameStatus === GameStatusEnum.NOT_STARTED && (
+                  {isOnline && !game?.status && (
                     <Button
                       shape="pill"
                       color="secondary"
@@ -77,7 +77,7 @@ export const UserList = () => {
                       Invite
                     </Button>
                   )}
-                  {isOnline && gameStatus !== GameStatusEnum.NOT_STARTED && "online"}
+                  {isOnline && game?.status && "online"}
                 </li>
               );
             })}

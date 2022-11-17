@@ -1,10 +1,9 @@
 import { Socket } from "Socket.IO-client";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
-import { Room, User } from ".";
+import { Game, Room, User } from ".";
 
 export enum GameStatusEnum {
-  NOT_STARTED = "NOT_STARTED",
-  PLAYING = "PLAYING",
+  STARTED = "STARTED",
   DRAW = "DRAW",
   WHITE_WON = "WHITE_WON",
   BLACK_WON = "BLACK_WON",
@@ -13,8 +12,8 @@ export enum GameStatusEnum {
 export type KeyOfGameStatusEnum = keyof typeof GameStatusEnum;
 
 export type GameContextType = {
-  gameStatus: KeyOfGameStatusEnum;
-  setGameStatus: (status: KeyOfGameStatusEnum) => void;
+  game?: Game;
+  setGame: (game: Game) => void;
   whiteTurn: boolean;
   isCheck: boolean;
   cellsInformation: CellInformation[];

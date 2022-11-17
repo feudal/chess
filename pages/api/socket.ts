@@ -3,6 +3,7 @@ import { Server } from "Socket.IO";
 
 import { SO_EVENTS } from "../../app-const";
 import { Game } from "../../models";
+import { GameStatusEnum } from "../../types";
 import { db } from "../../utils";
 
 const socketAndUserIds: { [name: string]: string } = {};
@@ -66,6 +67,7 @@ const SocketHandler = (req: NextApiRequest, res: any) => {
           white: fromUser,
           black: toUser,
           notation: "start",
+          status: GameStatusEnum.STARTED,
         });
         await game.save();
         await game.populate("white");

@@ -10,19 +10,12 @@ import {
   LOCAL_STORAGE,
   SO_EVENTS,
 } from "../app-const";
-import {
-  CellInformation,
-  GameContextType,
-  GameStatusEnum,
-  KeyOfGameStatusEnum,
-  Room,
-  User,
-} from "../types";
+import { CellInformation, Game, GameContextType, Room, User } from "../types";
 import { checkIfCheck, createNotation, getAvailableMoves, getError } from "../utils";
 
 const gameInitialState = {
-  gameStatus: GameStatusEnum.NOT_STARTED,
-  setGameStatus: (gameStatus: KeyOfGameStatusEnum) => {},
+  game: undefined,
+  setGame: (game: Game) => {},
   whiteTurn: true,
   isCheck: false,
   cellsInformation: CELLS_INFORMATION,
@@ -41,7 +34,7 @@ export const GameContext = createContext<GameContextType>(gameInitialState);
 let socket: Socket<DefaultEventsMap, DefaultEventsMap>;
 
 export const GameProvider = ({ children }: PropsWithChildren) => {
-  const [gameStatus, setGameStatus] = useState<KeyOfGameStatusEnum>(GameStatusEnum.NOT_STARTED);
+  const [game, setGame] = useState<Game>();
   const [whiteTurn, setWhiteTurn] = useState(gameInitialState.whiteTurn);
   const [isCheck, setIsCheck] = useState(false);
   const [cellsInformation, setCellsInformation] = useState(gameInitialState.cellsInformation);
@@ -116,10 +109,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   };
 
   const moveFigure = (cellInfo: CellInformation) => {
-    // ! Need to call this function only once after the move
-    // TODO: fix this
-    setGameStatus(GameStatusEnum.PLAYING);
-
     // ! isCheck is not working properly
     // TODO: fix isCheck
     setNotations((prev) => [...prev, createNotation(whiteTurn, selectedCell!, cellInfo, isCheck)]);
@@ -159,8 +148,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   return (
     <GameContext.Provider
       value={{
-        gameStatus,
-        setGameStatus,
+        game,
+        setGame,
         whiteTurn,
         isCheck,
         cellsInformation,

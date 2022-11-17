@@ -6,6 +6,7 @@ const GameSchema = new mongoose.Schema(
     black: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     notation: { type: String, required: true },
     winner: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    status: { type: String, required: true },
   },
   {
     timestamps: true,

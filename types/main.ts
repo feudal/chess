@@ -1,3 +1,5 @@
+import { KeyOfGameStatusEnum } from ".";
+
 export interface TimeInfo {
   createdAt: string;
   updatedAt: string;
@@ -22,9 +24,10 @@ export interface Room {
 }
 
 export interface Game extends TimeInfo {
-  _id: string;
-  white: User;
-  black: User;
-  gamePosition: string;
-  winner: User;
+  _id?: string;
+  white?: User;
+  black?: User;
+  winner?: User;
+  status?: KeyOfGameStatusEnum;
+  gamePosition?: string;
 }
