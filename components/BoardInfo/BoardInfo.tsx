@@ -4,6 +4,7 @@ import { Timer } from "..";
 import { GameContext } from "../../context";
 import { Board, Clock } from "../../svg";
 import { makeBEM } from "../../utils";
+import { Players } from "../Players";
 import { Title } from "../Title";
 
 const bem = makeBEM("board-info");
@@ -22,9 +23,7 @@ export const BoardInfo = () => {
           <Timer status={gameStatus} />
         </Title>
 
-        <Title icon={<div className={bem("square", { black: !whiteTurn })}></div>}>{`${
-          whiteTurn ? "White" : "Black"
-        } turn`}</Title>
+        <Players />
       </div>
       <div className={bem("notation")}>
         <Title>Notation</Title>

@@ -1,0 +1,10 @@
+.players {
+  &__square {
+    border: 2px solid var(--black-cell);
+    width: 24px;
+    height: 24px;
+    &--black {
+      background-color: var(--black-cell);
+    }
+  }
+}
