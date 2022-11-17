@@ -2,6 +2,8 @@ import { NextApiRequest } from "next";
 import { Server } from "Socket.IO";
 
 import { SO_EVENTS } from "../../app-const";
+import { Game } from "../../models";
+import { db } from "../../utils";
 
 const socketAndUserIds: { [name: string]: string } = {};
 
@@ -48,12 +50,36 @@ const SocketHandler = (req: NextApiRequest, res: any) => {
         }
       });
 
-      socket.on(SO_EVENTS.INVITE_SENT, (fromUserName, toUserId) => {
-        console.log("invite sent to user - " + toUserId);
+      socket.on(SO_EVENTS.INVITE_SENT, (fromUser, toUser) => {
+        console.log("invite sent to user - " + toUser?._id);
         const socketId = Object.entries(socketAndUserIds)
-          .find(([key, value]) => key === toUserId)
+          .find(([key, value]) => key === toUser?._id)
           ?.pop();
-        if (socketId) io.in(socketId).emit(SO_EVENTS.INVITE_RECEIVED, fromUserName);
+        if (socketId) io.in(socketId).emit(SO_EVENTS.INVITE_RECEIVED, fromUser);
+      });
+
+      socket.on(SO_EVENTS.INITIATE_GAME, async (fromUser, toUser) => {
+        console.log("game initiated to user - " + toUser?._id);
+
+        await db.connect();
+        const game = await Game.create({
+          white: fromUser,
+          black: toUser,
+          gamePosition: "start",
+        });
+        await game.save();
+        await game.populate("white");
+        await game.populate("black");
+        await db.disconnect();
+
+        // * get players sockets id join them to the game room and emit the game id
+        const socketsId = Object.entries(socketAndUserIds)
+          .filter(([key, value]) => key === fromUser?._id || key === toUser?._id)
+          .map(([, value]) => value);
+        socketsId.forEach((socketId) => {
+          socket.join(game._id);
+          io.in(socketId).emit(SO_EVENTS.GAME_STARTED, game);
+        });
       });
     });
   }

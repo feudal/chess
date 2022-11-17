@@ -4,40 +4,45 @@ import { SO_EVENTS } from "../../app-const";
 import { GameContext } from "../../context";
 import { makeBEM } from "../../utils";
 import { Modal, Title } from "..";
+import { Game, GameStatusEnum } from "../../types";
 
 const bem = makeBEM("players");
 
 export const Players = () => {
+  const { socket, whiteTurn, setGameStatus } = useContext(GameContext);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const { socket, whiteTurn } = useContext(GameContext);
+  const [time, setTime] = useState(5);
+  const [game, setGame] = useState<Game>();
 
   useEffect(() => {
-    socket?.on(SO_EVENTS.INITIATE_GAME, (fromUser, toUser) => {
+    socket?.on(SO_EVENTS.GAME_STARTED, (game) => {
       setModalIsOpen(true);
-      // socket?.emit(SO_EVENTS.INITIATE_GAME, fromUser, toUser);
+      setGame(game);
+      setGameStatus(GameStatusEnum.PLAYING);
+
+      console.log({ game });
     });
   }, [socket]);
 
-  const handleGameStart = () => {
-    setModalIsOpen(false);
-    socket?.emit(SO_EVENTS.GAME_STARTED);
-  };
+  useEffect(() => {
+    if (time > 0) {
+      setTimeout(() => setTime(time - 1), 1000);
+    } else {
+      setModalIsOpen(false);
+      setTime(5);
+    }
+  }, [time]);
 
   return (
     <>
       <div className="players">
         <Title icon={<div className={bem("square", { black: !whiteTurn })}></div>}>{`${
-          whiteTurn ? "White" : "Black"
+          whiteTurn ? game?.white.name ?? "White" : game?.black.name ?? "Black"
         } turn`}</Title>
       </div>
 
-      <Modal
-        open={modalIsOpen}
-        onClose={() => setModalIsOpen(false)}
-        onAccept={() => handleGameStart()}
-        title="Game start"
-      >
-        Game will start in 10 seconds
+      <Modal open={modalIsOpen} onClose={() => setModalIsOpen(false)} title="Game">
+        Game will start in {time} seconds
       </Modal>
     </>
   );
