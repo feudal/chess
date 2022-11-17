@@ -7,8 +7,7 @@ const formatTime = (time: number) => {
 
 export const Timer = () => {
   const { game } = useContext(GameContext);
-  const passedTime = new Date().getTime() - new Date(game?.createdAt as any).getTime();
-  const [time, setTime] = useState(+passedTime || 0);
+  const [time, setTime] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -17,6 +16,11 @@ export const Timer = () => {
 
     return () => clearInterval(interval);
   }, [game?.status, time]);
+
+  useEffect(() => {
+    const passedTime = new Date().getTime() - new Date(game?.createdAt as any).getTime();
+    setTime(+passedTime);
+  }, [game?.createdAt]);
 
   return <div className="timer">{formatTime(time)}</div>;
 };
