@@ -8,8 +8,8 @@ import { Figure } from "../Figure";
 const bem = makeBEM("board");
 
 export const Board = () => {
-  const { cellsInformation, move, whiteTurn, game, user } = useContext(GameContext);
-  const isUserTurn = whiteTurn
+  const { cellsInformation, move, game, user } = useContext(GameContext);
+  const isUserTurn = game?.isWhiteTurn
     ? game?.white?.name === user?.name
     : game?.black?.name === user?.name;
 

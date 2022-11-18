@@ -14,18 +14,14 @@ import { CellInformation, Game, GameContextType, Room, User } from "../types";
 import { checkIfCheck, createNotation, getAvailableMoves, getError } from "../utils";
 
 const gameInitialState = {
-  game: undefined,
+  game: { isWhiteTurn: true, isCheck: false },
   setGame: (game: Game) => {},
-  whiteTurn: true,
-  isCheck: false,
   cellsInformation: CELLS_INFORMATION,
   move: () => undefined,
   selectedCell: undefined,
 
   room: undefined,
   setRoom: () => undefined,
-  notations: [],
-  setNotations: () => undefined,
   socket: undefined,
 };
 
@@ -35,13 +31,10 @@ let socket: Socket<DefaultEventsMap, DefaultEventsMap>;
 
 export const GameProvider = ({ children }: PropsWithChildren) => {
   const [game, setGame] = useState<Game>();
-  const [whiteTurn, setWhiteTurn] = useState(gameInitialState.whiteTurn);
-  const [isCheck, setIsCheck] = useState(false);
   const [cellsInformation, setCellsInformation] = useState(gameInitialState.cellsInformation);
   const [selectedCell, setSelectedCell] = useState<CellInformation | undefined>(undefined);
   const [room, setRoom] = useState<Room>();
   const [user, setUser] = useState<User>();
-  const [notations, setNotations] = useState<string[]>([]);
   const [socketProvider, setSocketProvider] =
     useState<Socket<DefaultEventsMap, DefaultEventsMap>>();
 
@@ -85,7 +78,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const selectFigure = (cellInfo: CellInformation) => {
     // * If the cell is empty, return or if figure is not of the current player's color
-    if (!cellInfo?.figure || cellInfo.figure.color !== (whiteTurn ? "white" : "black")) return;
+    if (!cellInfo?.figure || cellInfo.figure.color !== (game?.isWhiteTurn ? "white" : "black"))
+      return;
 
     setSelectedCell(cellInfo);
     const availableMoves = getAvailableMoves(cellsInformation, cellInfo);
@@ -109,12 +103,15 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const moveFigure = (cellInfo: CellInformation) => {
     // ! isCheck is not working properly
     // TODO: fix isCheck
-    setNotations((prev) => [...prev, createNotation(whiteTurn, selectedCell!, cellInfo, isCheck)]);
+    setGame((prev) => ({
+      ...prev,
+      lastMove: createNotation(game?.isWhiteTurn, selectedCell!, cellInfo, game?.isCheck),
+    }));
 
     setCellsInformation((prev) => {
       return prev.map((cell) => {
         // * change white turn to opposite
-        setWhiteTurn(!whiteTurn);
+        setGame((prev) => ({ ...prev, isWhiteTurn: !game?.isWhiteTurn }));
         // * set cell where figure was moved to undefined
         if (selectedCell?.notation === cell.notation)
           return { ...cell, state: undefined, figure: undefined };
@@ -140,7 +137,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   };
 
   useEffect(() => {
-    setIsCheck(checkIfCheck(cellsInformation, whiteTurn ? "white" : "black"));
+    const isCheck = checkIfCheck(cellsInformation, game?.isWhiteTurn ? "white" : "black");
+    setGame((prev) => ({ ...prev, isCheck }));
   }, [cellsInformation]);
 
   return (
@@ -148,17 +146,13 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       value={{
         game,
         setGame,
-        whiteTurn,
-        isCheck,
         cellsInformation,
-        move,
         selectedCell,
+        move,
 
         room,
         setRoom,
         user,
-        notations,
-        setNotations,
         socket: socketProvider,
       }}
     >

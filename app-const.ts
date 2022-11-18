@@ -129,6 +129,7 @@ const SO_EVENTS = {
   INVITE_RECEIVED: "invite-received",
   INITIATE_GAME: "initiate-game",
   GAME_STARTED: "game-started",
+  USER_MOVE: "user-move",
 };
 
 export {

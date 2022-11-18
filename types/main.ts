@@ -1,8 +1,8 @@
 import { KeyOfGameStatusEnum } from ".";
 
 export interface TimeInfo {
-  createdAt: string;
-  updatedAt: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface User extends TimeInfo {
@@ -30,4 +30,9 @@ export interface Game extends TimeInfo {
   winner?: User;
   status?: KeyOfGameStatusEnum;
   gamePosition?: string;
+  notations?: string[];
+
+  lastMove?: string;
+  isWhiteTurn?: boolean;
+  isCheck?: boolean;
 }

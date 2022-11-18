@@ -1,19 +1,29 @@
+import axios from "axios";
 import React, { useContext, useEffect, useRef } from "react";
 
 import { Timer } from "..";
+import { SO_EVENTS } from "../../app-const";
 import { GameContext } from "../../context";
 import { Board, Clock } from "../../svg";
-import { makeBEM } from "../../utils";
+import { createNotation, makeBEM } from "../../utils";
 import { Players } from "../Players";
 import { Title } from "../Title";
 
 const bem = makeBEM("board-info");
 
 export const BoardInfo = () => {
-  const { notations } = useContext(GameContext);
+  const { game, setGame, socket } = useContext(GameContext);
   const bottomRef = useRef<HTMLSpanElement>(null);
 
-  useEffect(() => bottomRef.current?.scrollIntoView({ behavior: "smooth" }), [notations]);
+  useEffect(() => {
+    socket?.on(SO_EVENTS.USER_MOVE, () => {});
+  }, [socket]);
+
+  useEffect(() => bottomRef.current?.scrollIntoView({ behavior: "smooth" }), [game?.notations]);
+
+  // axios.post(`/api/game/${game?._id}`, {
+  //   notation: game?.lastMove,
+  // });
 
   return (
     <div className={bem()}>
@@ -28,7 +38,7 @@ export const BoardInfo = () => {
       <div className={bem("notation")}>
         <Title>Notation</Title>
         <div className={bem("notation-wrapper")}>
-          {notations.map((notation, index) => (
+          {game?.notations?.map((notation, index) => (
             <span key={index} className={bem("notation-item")}>
               <span className={bem("notation-order")}>{index + 1}.</span>
               {notation}

@@ -14,8 +14,6 @@ export type KeyOfGameStatusEnum = keyof typeof GameStatusEnum;
 export type GameContextType = {
   game?: Game;
   setGame: (game: Game) => void;
-  whiteTurn: boolean;
-  isCheck: boolean;
   cellsInformation: CellInformation[];
   move: (cellInfo: CellInformation) => void;
   selectedCell?: CellInformation;
@@ -23,8 +21,6 @@ export type GameContextType = {
   room?: Room;
   setRoom: (room: Room) => void;
   user?: User;
-  notations: string[];
-  setNotations: (notation: string[]) => void;
   socket?: Socket<DefaultEventsMap, DefaultEventsMap>;
 };
 

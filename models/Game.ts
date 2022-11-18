@@ -7,6 +7,8 @@ const GameSchema = new mongoose.Schema(
     notation: { type: String, required: true },
     winner: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     status: { type: String, required: true },
+    isWhiteTurn: { type: Boolean, required: true },
+    isCheck: { type: Boolean, required: true },
   },
   {
     timestamps: true,

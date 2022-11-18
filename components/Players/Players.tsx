@@ -14,11 +14,11 @@ const move = (game_id: string, notation: string) =>
 const bem = makeBEM("players");
 
 export const Players = () => {
-  const { socket, whiteTurn, game, setGame, user } = useContext(GameContext);
+  const { socket, game, setGame, user } = useContext(GameContext);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [time, setTime] = useState(5);
 
-  const whoseTurn = whiteTurn ? game?.white?.name ?? "White" : game?.black?.name ?? "Black";
+  const whoseTurn = game?.isWhiteTurn ? game?.white?.name ?? "White" : game?.black?.name ?? "Black";
 
   useEffect(() => {
     socket?.on(SO_EVENTS.GAME_STARTED, (game) => {
@@ -44,7 +44,7 @@ export const Players = () => {
   return (
     <>
       <div className="players">
-        <Title icon={<div className={bem("square", { black: !whiteTurn })}></div>}>{`${
+        <Title icon={<div className={bem("square", { black: !game?.isWhiteTurn })}></div>}>{`${
           whoseTurn === user?.name ? "Your" : whoseTurn
         } turn`}</Title>
       </div>

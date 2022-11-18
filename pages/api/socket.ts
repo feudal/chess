@@ -68,6 +68,8 @@ const SocketHandler = (req: NextApiRequest, res: any) => {
           black: toUser,
           notation: "start",
           status: GameStatusEnum.STARTED,
+          isWhiteTurn: true,
+          isCheck: false,
         });
         await game.save();
         await game.populate("white");

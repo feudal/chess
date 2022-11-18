@@ -6,16 +6,16 @@ import {
 } from "../types";
 
 export const createNotation = (
-  whiteTurn: boolean,
-  firstCell: CellInformation,
-  nextCell: CellInformation,
-  isCheck: boolean,
+  isWhiteTurn?: boolean,
+  firstCell?: CellInformation,
+  nextCell?: CellInformation,
+  isCheck?: boolean,
 ) => {
-  const figureNotation = whiteTurn
+  const figureNotation = isWhiteTurn
     ? WHITE_FIGURE_TYPE_NOTATION[firstCell?.figure?.type || FIGURE_TYPE.PAWN]
     : BLACK_FIGURE_TYPE_NOTATION[firstCell?.figure?.type || FIGURE_TYPE.PAWN];
-  const isEaten = nextCell.figure ? ":" : "-";
+  const isEaten = nextCell?.figure ? ":" : "-";
   const isCheckNotation = isCheck ? "+" : "";
 
-  return `${figureNotation}${firstCell?.notation}${isEaten}${nextCell.notation}${isCheckNotation}`;
+  return `${figureNotation}${firstCell?.notation}${isEaten}${nextCell?.notation}${isCheckNotation}`;
 };

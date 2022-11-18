@@ -6,7 +6,7 @@ import { Button, Modal, Title } from "..";
 import { SO_EVENTS } from "../../app-const";
 import { GameContext } from "../../context";
 import { Users } from "../../svg";
-import { GameStatusEnum, Room, User } from "../../types";
+import { Room, User } from "../../types";
 import { makeBEM } from "../../utils";
 
 const bem = makeBEM("user-list");
