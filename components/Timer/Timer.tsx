@@ -10,15 +10,19 @@ export const Timer = () => {
   const [time, setTime] = useState(0);
 
   useEffect(() => {
+    if (!game?.status) return;
+
     const interval = setInterval(() => {
       setTime((prev) => prev + 1000);
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [game?.status, time]);
+  }, [game?.status]);
 
   useEffect(() => {
-    const passedTime = new Date().getTime() - new Date(game?.createdAt as any).getTime();
+    if (!game?.createdAt) return;
+
+    const passedTime = new Date().getTime() - new Date(game?.createdAt).getTime();
     setTime(+passedTime);
   }, [game?.createdAt]);
 
