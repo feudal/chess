@@ -42,15 +42,13 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const [room, setRoom] = useState<Room>();
   const [user, setUser] = useState<User>();
   const [notations, setNotations] = useState<string[]>([]);
-
-  // * I don't know why but this code is working
-  const [socketId, setSocketId] = useState<string>();
-  useEffect(() => setSocketId(socket?.id), [socket]);
+  const [socketProvider, setSocketProvider] =
+    useState<Socket<DefaultEventsMap, DefaultEventsMap>>();
 
   const socketInitializer = async () => {
     await axios("/api/socket");
     socket = io();
-    setSocketId(socket.id);
+    setSocketProvider(socket);
     user?._id && socket.emit(SO_EVENTS.LOGIN, user?._id);
   };
 
@@ -161,7 +159,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         user,
         notations,
         setNotations,
-        socket,
+        socket: socketProvider,
       }}
     >
       {children}
