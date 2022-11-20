@@ -15,14 +15,16 @@ export const BoardInfo = () => {
   const bottomRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
-    socket?.on(SO_EVENTS.GAME_STARTED, (game) => {
-      socket?.emit(SO_EVENTS.JOIN_GAME, game?._id);
-    });
+    socket?.emit(SO_EVENTS.JOIN_GAME, game?._id);
     socket?.on(SO_EVENTS.GAME_UPDATED, (game) => {
       setGame(game);
       localStorage.setItem(LOCAL_STORAGE.GAME, JSON.stringify(game));
     });
   }, [socket]);
+
+  useEffect(() => {
+    socket?.emit(SO_EVENTS.JOIN_GAME, game?._id);
+  }, [game?._id]);
 
   useEffect(() => bottomRef.current?.scrollIntoView({ behavior: "smooth" }), [game?.notation]);
 
