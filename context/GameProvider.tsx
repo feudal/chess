@@ -103,10 +103,11 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const moveFigure = (cellInfo: CellInformation) => {
     // ! isCheck is not working properly
     // TODO: fix isCheck
-    setGame((prev) => ({
-      ...prev,
-      lastMove: createNotation(game?.isWhiteTurn, selectedCell!, cellInfo, game?.isCheck),
-    }));
+    socketProvider?.emit(
+      SO_EVENTS.USER_MOVE,
+      game?._id,
+      createNotation(game?.isWhiteTurn, selectedCell!, cellInfo, game?.isCheck),
+    );
 
     setCellsInformation((prev) => {
       return prev.map((cell) => {

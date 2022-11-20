@@ -53,9 +53,9 @@ const SocketHandler = (req: NextApiRequest, res: any) => {
 
       socket.on(SO_EVENTS.INVITE_SENT, (fromUser, toUser) => {
         console.log("invite sent to user - " + toUser?._id);
-        const socketId = Object.entries(socketAndUserIds)
-          .find(([key, value]) => key === toUser?._id)
-          ?.pop();
+        const socketId = Object.entries(socketAndUserIds).find(
+          ([key, value]) => key === toUser?._id,
+        )?.[1];
         if (socketId) io.in(socketId).emit(SO_EVENTS.INVITE_RECEIVED, fromUser);
       });
 
@@ -81,9 +81,29 @@ const SocketHandler = (req: NextApiRequest, res: any) => {
           .filter(([key, value]) => key === fromUser?._id || key === toUser?._id)
           .map(([, value]) => value);
         socketsId.forEach((socketId) => {
-          socket.join(game._id);
           io.in(socketId).emit(SO_EVENTS.GAME_STARTED, game);
         });
+      });
+
+      socket.on(SO_EVENTS.JOIN_GAME, (game_id) => {
+        console.log("joining game - " + game_id);
+        socket.join(game_id);
+      });
+
+      socket.on(SO_EVENTS.USER_MOVE, async (gameId, lastMove) => {
+        console.log("user move - " + lastMove);
+
+        await db.connect();
+        const game = await Game.findById(gameId);
+        if (game) {
+          game.notation = `${await game.notation},${lastMove}`;
+          game.isWhiteTurn = !game.isWhiteTurn;
+        }
+        await game.save();
+        await game.populate("white");
+        await game.populate("black");
+        await db.disconnect();
+        io.to(gameId).emit(SO_EVENTS.GAME_UPDATED, game);
       });
     });
   }

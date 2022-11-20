@@ -1,11 +1,10 @@
-import axios from "axios";
 import React, { useContext, useEffect, useRef } from "react";
 
 import { Timer } from "..";
-import { SO_EVENTS } from "../../app-const";
+import { LOCAL_STORAGE, SO_EVENTS } from "../../app-const";
 import { GameContext } from "../../context";
 import { Board, Clock } from "../../svg";
-import { createNotation, makeBEM } from "../../utils";
+import { makeBEM } from "../../utils";
 import { Players } from "../Players";
 import { Title } from "../Title";
 
@@ -16,14 +15,16 @@ export const BoardInfo = () => {
   const bottomRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
-    socket?.on(SO_EVENTS.USER_MOVE, () => {});
+    socket?.on(SO_EVENTS.GAME_STARTED, (game) => {
+      socket?.emit(SO_EVENTS.JOIN_GAME, game?._id);
+    });
+    socket?.on(SO_EVENTS.GAME_UPDATED, (game) => {
+      setGame(game);
+      localStorage.setItem(LOCAL_STORAGE.GAME, JSON.stringify(game));
+    });
   }, [socket]);
 
-  useEffect(() => bottomRef.current?.scrollIntoView({ behavior: "smooth" }), [game?.notations]);
-
-  // axios.post(`/api/game/${game?._id}`, {
-  //   notation: game?.lastMove,
-  // });
+  useEffect(() => bottomRef.current?.scrollIntoView({ behavior: "smooth" }), [game?.notation]);
 
   return (
     <div className={bem()}>
@@ -38,12 +39,16 @@ export const BoardInfo = () => {
       <div className={bem("notation")}>
         <Title>Notation</Title>
         <div className={bem("notation-wrapper")}>
-          {game?.notations?.map((notation, index) => (
-            <span key={index} className={bem("notation-item")}>
-              <span className={bem("notation-order")}>{index + 1}.</span>
-              {notation}
-            </span>
-          ))}
+          {game?.notation?.split(",")?.map((item, index) => {
+            if (!index) return null;
+            const numeration = `${index % 2 ? Math.ceil(index / 2) : ""}`;
+            return (
+              <span key={index} className={bem("notation-item")}>
+                <span className={bem("notation-order")}>{numeration && `${numeration}.`}</span>
+                {item}
+              </span>
+            );
+          })}
           <span ref={bottomRef}></span>
         </div>
       </div>

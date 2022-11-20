@@ -30,7 +30,7 @@ export interface Game extends TimeInfo {
   winner?: User;
   status?: KeyOfGameStatusEnum;
   gamePosition?: string;
-  notations?: string[];
+  notation?: string;
 
   lastMove?: string;
   isWhiteTurn?: boolean;

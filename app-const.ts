@@ -127,9 +127,11 @@ const SO_EVENTS = {
   JOIN_ROOM: "join-room",
   INVITE_SENT: "invite-sent",
   INVITE_RECEIVED: "invite-received",
+  USER_MOVE: "user-move",
   INITIATE_GAME: "initiate-game",
   GAME_STARTED: "game-started",
-  USER_MOVE: "user-move",
+  JOIN_GAME: "join-game",
+  GAME_UPDATED: "game-updated",
 };
 
 export {
