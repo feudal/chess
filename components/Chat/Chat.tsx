@@ -58,7 +58,9 @@ export const Chat = () => {
         <ul className={bem("list")}>
           {room?.messages.map((msg, idx) => (
             <li key={idx} className={bem("item")}>
-              <span className={bem("time")}>{new Date(msg.createdAt).toLocaleTimeString()}: </span>
+              <span className={bem("time")}>
+                {msg.createdAt && new Date(msg.createdAt).toLocaleTimeString()}:{" "}
+              </span>
               <span className={bem("user")}>
                 {msg.user._id === user?._id ? "You" : msg.user.name}:
               </span>

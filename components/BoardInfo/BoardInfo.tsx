@@ -4,6 +4,7 @@ import { Timer } from "..";
 import { LOCAL_STORAGE, SO_EVENTS } from "../../app-const";
 import { GameContext } from "../../context";
 import { Board, Clock } from "../../svg";
+import { Game } from "../../types";
 import { makeBEM } from "../../utils";
 import { Players } from "../Players";
 import { Title } from "../Title";
@@ -16,7 +17,7 @@ export const BoardInfo = () => {
 
   useEffect(() => {
     socket?.emit(SO_EVENTS.JOIN_GAME, game?._id);
-    socket?.on(SO_EVENTS.GAME_UPDATED, (game) => {
+    socket?.on(SO_EVENTS.GAME_UPDATED, (game: Game) => {
       setGame(game);
       localStorage.setItem(LOCAL_STORAGE.GAME, JSON.stringify(game));
     });

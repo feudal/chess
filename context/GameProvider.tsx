@@ -1,7 +1,7 @@
 import axios from "axios";
 import { createContext, PropsWithChildren, useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { io, Socket } from "Socket.IO-client";
+import { io, Socket } from "socket.io-client";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
 
 import {

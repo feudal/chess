@@ -1,4 +1,4 @@
-import { Socket } from "Socket.IO-client";
+import { Socket } from "socket.io-client";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
 import { Game, Room, User } from ".";
 

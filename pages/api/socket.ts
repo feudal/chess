@@ -1,5 +1,5 @@
 import { NextApiRequest } from "next";
-import { Server } from "Socket.IO";
+import { Server } from "socket.io";
 
 import { SO_EVENTS } from "../../app-const";
 import { Game } from "../../models";

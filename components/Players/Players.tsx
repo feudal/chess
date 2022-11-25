@@ -5,6 +5,7 @@ import { GameContext } from "../../context";
 import { makeBEM } from "../../utils";
 import { Modal, Title } from "..";
 import axios from "axios";
+import { Game } from "../../types";
 
 const move = (game_id: string, notation: string) =>
   axios.post(`api/game/${game_id}`, { notation }).then((res) => {
@@ -21,7 +22,7 @@ export const Players = () => {
   const whoseTurn = game?.isWhiteTurn ? game?.white?.name ?? "White" : game?.black?.name ?? "Black";
 
   useEffect(() => {
-    socket?.on(SO_EVENTS.GAME_STARTED, (game) => {
+    socket?.on(SO_EVENTS.GAME_STARTED, (game: Game) => {
       setModalIsOpen(true);
       setGame(game);
       localStorage.setItem(LOCAL_STORAGE.GAME, JSON.stringify(game));
