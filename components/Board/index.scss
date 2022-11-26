@@ -1,22 +1,38 @@
 .board {
-  aspect-ratio: 1;
-  height: calc(100vh - 50px);
+  width: 100%;
+  height: 100%;
 
-  display: grid;
-  grid-template-columns: repeat(8, 1fr);
-  border: 1px solid var(--black-color);
-
-  &--inactive {
-    pointer-events: none;
+  &--horizontal {
+    .board__frame {
+      max-height: 100%;
+    }
   }
 
-  &--is-turned {
-    // mirroring the board
-    transform: scaleY(-1);
-    transform: rotate(180deg);
+  &--vertical {
+    .board__frame {
+      max-width: 100%;
+    }
+  }
 
-    .cell {
+  &__frame {
+    aspect-ratio: 1/1;
+
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    border: 1px solid var(--black-color);
+
+    &--inactive {
+      pointer-events: none;
+    }
+
+    &--is-turned {
+      // mirroring the board
+      transform: scaleY(-1);
       transform: rotate(180deg);
+
+      .cell {
+        transform: rotate(180deg);
+      }
     }
   }
 }
