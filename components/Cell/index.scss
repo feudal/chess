@@ -30,4 +30,10 @@
     border: 1px solid var(--selected-cell);
     background-color: var(--available-cell);
   }
+
+  @media (max-width: 520px) {
+    &__notation {
+      font-size: 12px;
+    }
+  }
 }

@@ -39,4 +39,16 @@
     grid-template-rows: 33.33% 33.33% 33.33%;
     grid-template-columns: 1fr;
   }
+
+  @media (max-width: 520px) {
+    &__top-bar {
+      padding: 0 10px;
+    }
+    &__logo {
+      span,
+      svg:nth-child(1) {
+        display: none;
+      }
+    }
+  }
 }

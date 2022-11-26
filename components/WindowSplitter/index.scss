@@ -33,4 +33,10 @@
     min-width: 200px;
     min-height: 200px;
   }
+
+  @media (max-width: 520px) {
+    &__left {
+      flex-grow: 1.3;
+    }
+  }
 }

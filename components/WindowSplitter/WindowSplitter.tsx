@@ -52,8 +52,6 @@ export const WindowSplitter = ({ left, right }: WindowSplitterProps) => {
     };
   }, [mouseIsDragging, orientation]);
 
-  useEffect(() => console.log({ mouseIsDragging }), [mouseIsDragging]);
-
   return (
     <div ref={ref} className={bem(null, [orientation])}>
       <div ref={leftRef} className={bem("left")}>
