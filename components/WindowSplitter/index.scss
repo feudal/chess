@@ -1,0 +1,36 @@
+.window-splitter {
+  width: 100%;
+  max-height: calc(100vh - 50px);
+
+  overflow: hidden;
+  display: flex;
+
+  &--vertical {
+    flex-direction: column;
+
+    .window-splitter__resizer {
+      height: 5px;
+      cursor: ns-resize;
+      margin: 2.5px 0;
+    }
+  }
+
+  &__resizer {
+    min-width: 5px;
+    background-color: var(--white-cell);
+    cursor: ew-resize;
+    margin: 0 2.5px;
+  }
+
+  &__left {
+    flex: 1;
+    overflow: hidden;
+  }
+
+  &__right {
+    flex: 1;
+    overflow: hidden;
+    min-width: 200px;
+    min-height: 200px;
+  }
+}

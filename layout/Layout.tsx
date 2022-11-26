@@ -1,10 +1,10 @@
 import { PropsWithChildren } from "react";
 import { ToastContainer } from "react-toastify";
-import { UserInfo } from "../components/UserInfo";
 
 import { Knight } from "../svg";
 import { makeBEM } from "../utils";
 import "react-toastify/dist/ReactToastify.css";
+import { UserInfo, WindowSplitter } from "../components";
 
 interface LayoutProps extends PropsWithChildren<{}> {
   user?: string | null;
@@ -26,8 +26,10 @@ export const Layout = ({ children, sideBar }: LayoutProps) => {
           <UserInfo />
         </div>
         <main className={bem("main")}>
-          {children}
-          <div className={bem("side-bar")}>{sideBar}</div>
+          <WindowSplitter
+            left={children}
+            right={<div className={bem("side-bar")}>{sideBar}</div>}
+          />
         </main>
       </div>
 

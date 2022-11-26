@@ -10,3 +10,4 @@ export * from "./Title";
 export * from "./Timer";
 export * from "./Modal";
 export * from "./Players";
+export * from "./WindowSplitter";
