@@ -1,3 +1,4 @@
+export * from "./audio";
 export * from "./bem";
 export * from "./create-class-with-modifiers";
 export * from "./db";

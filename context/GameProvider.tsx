@@ -11,7 +11,7 @@ import {
   SO_EVENTS,
 } from "../app-const";
 import { CellInformation, Game, GameContextType, Room, User } from "../types";
-import { checkIfCheck, createNotation, getAvailableMoves, getError } from "../utils";
+import { checkIfCheck, createNotation, getAvailableMoves, getError, soundEffects } from "../utils";
 
 const gameInitialState = {
   game: { isWhiteTurn: true, isCheck: false },
@@ -103,6 +103,14 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const moveFigure = (cellInfo: CellInformation) => {
     // ! isCheck is not working properly
     // TODO: fix isCheck
+
+    // * sound effect
+    const isCapture = cellInfo.figure ? true : false;
+    const isCheck = checkIfCheck(cellsInformation, game?.isWhiteTurn ? "black" : "white");
+    if (isCapture) soundEffects.capture();
+    else if (isCheck) soundEffects.check();
+    else soundEffects.move();
+
     socketProvider?.emit(
       SO_EVENTS.USER_MOVE,
       game?._id,
